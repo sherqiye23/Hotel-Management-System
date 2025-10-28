@@ -1,8 +1,11 @@
-import React from 'react'
+import LoginPageUI from '@/src/components/Login and Register components/LoginPageUI'
 
+export const metadata = {
+  title: 'Login - Hotel Management System',
+};
 const LoginPage = () => {
   return (
-    <div>LoginPage</div>
+    <><LoginPageUI /></>
   )
 }
 

@@ -2,9 +2,11 @@ import User from "@/src/models/userModel";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from 'bcryptjs';
+import { connect } from "@/src/dbConfig/dbConfig";
 
 export async function POST(request: NextRequest) {
     try {
+        connect()
         const reqBody = await request.json();
         const { firstname, lastname, email, password } = reqBody;
 
@@ -86,7 +88,7 @@ export async function POST(request: NextRequest) {
         });
         const savedUser = await newUser.save()
         return NextResponse.json({
-            message: 'Sign up successfully!',
+            message: 'SignUp successfully!',
             success: true,
             savedUser
         })

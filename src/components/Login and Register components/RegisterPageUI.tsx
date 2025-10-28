@@ -3,44 +3,50 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from "./LoginRegister.module.css";
 import Link from 'next/link';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import { ErrorResponseData } from '@/src/types/axiosErrorType';
+import toast from 'react-hot-toast';
+
+type registerFieldsType = {
+    type: string,
+    name: string,
+    placeholder: string
+};
+
+const registerFields: registerFieldsType[] = [
+    {
+        type: 'text',
+        name: 'firstname',
+        placeholder: 'First Name'
+    },
+    {
+        type: 'text',
+        name: 'lastname',
+        placeholder: 'Last Name'
+    },
+    {
+        type: 'email',
+        name: 'email',
+        placeholder: 'Email'
+    },
+    {
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password'
+    },
+]
 
 const RegisterPageUI: React.FC = () => {
-    type registerFieldsType = {
-        type: string,
-        name: string,
-        placeholder: string
-    };
-
-    const registerFields: registerFieldsType[] = [
-        {
-            type: 'text',
-            name: 'firstName',
-            placeholder: 'First Name'
-        },
-        {
-            type: 'text',
-            name: 'lastName',
-            placeholder: 'Last Name'
-        },
-        {
-            type: 'email',
-            name: 'email',
-            placeholder: 'Email'
-        },
-        {
-            type: 'password',
-            name: 'password',
-            placeholder: 'Password'
-        },
-    ]
+    const router = useRouter();
     return (
         <Formik
-            initialValues={{ firstName: '', lastName: '', email: '', password: '' }}
+            initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
             validationSchema={Yup.object({
-                firstName: Yup.string()
+                firstname: Yup.string()
                     .max(15, 'Must be 15 characters or less')
                     .required('Required'),
-                lastName: Yup.string()
+                lastname: Yup.string()
                     .max(15, 'Must be 15 characters or less')
                     .required('Required'),
                 email: Yup.string().email('Invalid email address').required('Required'),
@@ -53,8 +59,19 @@ const RegisterPageUI: React.FC = () => {
                     )
                     .min(8, "Min 8 chars"),
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                console.log(values);
+            onSubmit={async (values, { setSubmitting }) => {
+                try {
+                    const response = await axios.post('/api/user/post/register', values);
+                    toast.success(response.data.message)
+                    router.push('/login')
+                } catch (error) {
+                    const err = error as AxiosError;
+                    console.log('Failed: ', err);
+                    const data = err.response?.data as ErrorResponseData;
+                    const message = data?.message || data?.error || err.message;
+                    console.log(message)
+                    toast.error(message || 'Something went wrong');
+                }
             }}
         >
             <Form>

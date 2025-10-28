@@ -4,26 +4,31 @@ import styles from "./LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from "next/navigation"
+import { ErrorResponseData } from "@/src/types/axiosErrorType";
+import toast from "react-hot-toast";
 
+type loginFieldsType = {
+    type: string,
+    name: string,
+    placeholder: string
+};
+
+const loginFields: loginFieldsType[] = [
+    {
+        type: 'email',
+        name: 'email',
+        placeholder: 'Email'
+    },
+    {
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password'
+    }
+]
 const LoginPageUI: React.FC = () => {
-    type loginFieldsType = {
-        type: string,
-        name: string,
-        placeholder: string
-    };
-
-    const loginFields: loginFieldsType[] = [
-        {
-            type: 'email',
-            name: 'email',
-            placeholder: 'Email'
-        },
-        {
-            type: 'password',
-            name: 'password',
-            placeholder: 'Password'
-        }
-    ]
+    const router = useRouter();
     return (
         <Formik
             initialValues={{ email: '', password: '', rememberMe: false }}
@@ -31,8 +36,27 @@ const LoginPageUI: React.FC = () => {
                 email: Yup.string().email('Invalid email address').required('Required'),
                 password: Yup.string().required('Required'),
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                console.log(values);
+            onSubmit={async (values, { setSubmitting }) => {
+                try {
+                    const response = await axios.post('/api/user/post/login', values);
+                    toast.success(response.data.message)
+                    // router.push('/')
+                    // if (response.data) {
+                    //     const responseUser = await axios.get('/api/users/get/user', { withCredentials: true });
+                    //     setUserInfo(responseUser.data)
+                    //     // toast.success('Success login!')
+                    //     router.push('/')
+                    // } else {
+                    //     // toast.error(response.data.error.message)
+                    // }
+                } catch (error) {
+                    const err = error as AxiosError;
+                    console.log('Failed: ', err);
+                    const data = err.response?.data as ErrorResponseData;
+                    const message = data?.message || data?.error || err.message;
+                    console.log(message)
+                    toast.error(message || 'Something went wrong');
+                }
             }}
         >
             <Form>

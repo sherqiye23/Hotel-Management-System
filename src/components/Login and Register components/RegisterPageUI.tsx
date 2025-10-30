@@ -3,10 +3,10 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from "./LoginRegister.module.css";
 import Link from 'next/link';
-import axios, { AxiosError } from 'axios';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useRouter } from 'next/navigation';
-import { ErrorResponseData } from '@/src/types/axiosErrorType';
 import toast from 'react-hot-toast';
+import { useRegisterUserMutation } from '@/src/lib/features/user/userSlice';
 
 type registerFieldsType = {
     type: string,
@@ -39,6 +39,7 @@ const registerFields: registerFieldsType[] = [
 
 const RegisterPageUI: React.FC = () => {
     const router = useRouter();
+    const [registerUser] = useRegisterUserMutation()
     return (
         <Formik
             initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
@@ -59,18 +60,24 @@ const RegisterPageUI: React.FC = () => {
                     )
                     .min(8, "Min 8 chars"),
             })}
-            onSubmit={async (values, { setSubmitting }) => {
+            onSubmit={async (values) => {
                 try {
-                    const response = await axios.post('/api/user/post/register', values);
-                    toast.success(response.data.message)
+                    const response = await registerUser(values).unwrap();
+                    toast.success(response.message)
                     router.push('/login')
                 } catch (error) {
-                    const err = error as AxiosError;
-                    console.log('Failed: ', err);
-                    const data = err.response?.data as ErrorResponseData;
-                    const message = data?.message || data?.error || err.message;
-                    console.log(message)
-                    toast.error(message || 'Something went wrong');
+                    if ((error as FetchBaseQueryError)?.data) {
+                        const err = error as FetchBaseQueryError;
+                        const message =
+                            (err.data as any)?.message ||
+                            (err.data as any)?.error ||
+                            "Something went wrong";
+                        toast.error(message);
+                    } else if (error instanceof Error) {
+                        toast.error(error.message);
+                    } else {
+                        toast.error("Something went wrong");
+                    }
                 }
             }}
         >

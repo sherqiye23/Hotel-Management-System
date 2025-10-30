@@ -1,6 +1,6 @@
 import User from "@/src/models/userModel";
 import mongoose from "mongoose";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 interface Context {
     params: Promise<{
@@ -8,8 +8,7 @@ interface Context {
     }>;
 }
 
-export async function PUT(
-    request: NextRequest,
+export async function PATCH(
     context: Context
 ) {
     try {

@@ -3,9 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
+import { connect } from "@/src/dbConfig/dbConfig";
 
 export async function POST(request: NextRequest) {
     try {
+        connect()
         const reqBody = await request.json();
         const { email, password, rememberMe } = reqBody;
 
@@ -34,8 +36,8 @@ export async function POST(request: NextRequest) {
             lastname: findedUser.lastname
         };
         try {
-            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
-            const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1m' });
+            const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "3d" });
             const response = NextResponse.json({
                 accessToken,
                 success: true,
@@ -53,7 +55,7 @@ export async function POST(request: NextRequest) {
                     secure: process.env.NODE_ENV === "production",
                     sameSite: "strict",
                     path: "/",
-                    maxAge: 7 * 24 * 60 * 60,
+                    maxAge: 3 * 24 * 60 * 60,
                 });
             }
             return response;

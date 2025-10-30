@@ -4,10 +4,12 @@ import styles from "./LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios, { AxiosError } from 'axios';
 import { useRouter } from "next/navigation"
-import { ErrorResponseData } from "@/src/types/axiosErrorType";
 import toast from "react-hot-toast";
+import { useLoginUserMutation } from "@/src/lib/features/user/userSlice";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import axios from "axios";
+import { useMyContext } from "@/src/context/UserInfoContext";
 
 type loginFieldsType = {
     type: string,
@@ -29,6 +31,8 @@ const loginFields: loginFieldsType[] = [
 ]
 const LoginPageUI: React.FC = () => {
     const router = useRouter();
+    const [loginUser] = useLoginUserMutation()
+    const { setUserInfo } = useMyContext()
     return (
         <Formik
             initialValues={{ email: '', password: '', rememberMe: false }}
@@ -38,24 +42,23 @@ const LoginPageUI: React.FC = () => {
             })}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    const response = await axios.post('/api/user/post/login', values);
-                    toast.success(response.data.message)
-                    // router.push('/')
-                    // if (response.data) {
-                    //     const responseUser = await axios.get('/api/users/get/user', { withCredentials: true });
-                    //     setUserInfo(responseUser.data)
-                    //     // toast.success('Success login!')
-                    //     router.push('/')
-                    // } else {
-                    //     // toast.error(response.data.error.message)
-                    // }
+                    await loginUser(values).unwrap();
+                    const responseUser = await axios.get('/api/user/get/user', { withCredentials: true });
+                    setUserInfo(responseUser.data);
+                    router.push('/');
                 } catch (error) {
-                    const err = error as AxiosError;
-                    console.log('Failed: ', err);
-                    const data = err.response?.data as ErrorResponseData;
-                    const message = data?.message || data?.error || err.message;
-                    console.log(message)
-                    toast.error(message || 'Something went wrong');
+                    if ((error as FetchBaseQueryError)?.data) {
+                        const err = error as FetchBaseQueryError;
+                        const message =
+                            (err.data as any)?.message ||
+                            (err.data as any)?.error ||
+                            "Something went wrong";
+                        toast.error(message);
+                    } else if (error instanceof Error) {
+                        toast.error(error.message);
+                    } else {
+                        toast.error("Something went wrong");
+                    }
                 }
             }}
         >

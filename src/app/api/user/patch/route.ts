@@ -2,7 +2,7 @@ import User from "@/src/models/userModel";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { id, firstname, lastname } = reqBody;

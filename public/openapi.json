@@ -176,6 +176,134 @@
                 }
             }
         },
+        "/api/user/post/forgot-password-send-otp": {
+            "post": {
+                "summary": "Send OTP for password reset",
+                "description": "Generates and sends a 6-digit OTP to the user's email address for password reset. OTP is valid for 5 minutes.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    }
+                                },
+                                "required": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP sent successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Failed to send OTP or server error"
+                    }
+                }
+            }
+        },
+        "/api/user/post/forgot-password-verify-otp": {
+            "post": {
+                "summary": "Verify OTP for password reset",
+                "description": "Verifies the 6-digit OTP code previously sent to the user’s email. If valid, user can proceed to reset password.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully"
+                    },
+                    "400": {
+                        "description": "Invalid or expired OTP"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/user/post/reset-password": {
+            "post": {
+                "summary": "Reset user password",
+                "description": "Allows a user to set a new password after successful OTP verification. Password must meet validation rules.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "minLength": 8,
+                                        "maxLength": 16
+                                    },
+                                    "confirmPassword": {
+                                        "type": "string",
+                                        "minLength": 8,
+                                        "maxLength": 16
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "newPassword",
+                                    "confirmPassword"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully"
+                    },
+                    "400": {
+                        "description": "Validation or mismatch error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
         "/api/user/patch": {
             "patch": {
                 "summary": "Update user info",

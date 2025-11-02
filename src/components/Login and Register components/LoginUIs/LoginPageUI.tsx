@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import styles from "./LoginRegister.module.css";
+import styles from "../LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -29,7 +29,12 @@ const loginFields: loginFieldsType[] = [
         placeholder: 'Password'
     }
 ]
-const LoginPageUI: React.FC = () => {
+
+type Props = {
+    setPage: React.Dispatch<React.SetStateAction<string>>;
+};
+
+function LoginPageUI({ setPage }: Props) {
     const router = useRouter();
     const [loginUser] = useLoginUserMutation()
     const { setUserInfo } = useMyContext()
@@ -40,7 +45,7 @@ const LoginPageUI: React.FC = () => {
                 email: Yup.string().email('Invalid email address').required('Required'),
                 password: Yup.string().required('Required'),
             })}
-            onSubmit={async (values, { setSubmitting }) => {
+            onSubmit={async (values) => {
                 try {
                     await loginUser(values).unwrap();
                     const responseUser = await axios.get('/api/user/get/user', { withCredentials: true });
@@ -88,7 +93,7 @@ const LoginPageUI: React.FC = () => {
                                 <input type="submit" value="Login" />
                             </div>
                             <div className={styles.links}>
-                                <a href="#">Forget Password</a>
+                                <a className="cursor-pointer" onClick={() => setPage("inputEmail")}>Forget Password</a>
                                 <Link href="/register">SignUp</Link>
                             </div>
                         </div>

@@ -44,6 +44,30 @@ export const usersApi = createApi({
                 method: 'POST',
             }),
         }),
+        forgotPasswordSendOtp: builder.mutation({
+            query: (email) => ({
+                url: 'post/forgot-password-send-otp',
+                method: 'POST',
+                body: email,
+                headers: { 'Content-Type': 'application/json' }
+            }),
+        }),
+        forgotPasswordVerifyOtp: builder.mutation({
+            query: (verifyBody) => ({
+                url: 'post/forgot-password-verify-otp',
+                method: 'POST',
+                body: verifyBody,
+                headers: { 'Content-Type': 'application/json' }
+            }),
+        }),
+        resetPassword: builder.mutation({
+            query: (resetBody) => ({
+                url: 'post/reset-password',
+                method: 'POST',
+                body: resetBody,
+                headers: { 'Content-Type': 'application/json' }
+            }),
+        }),
         // put requests
         updateUser: builder.mutation({
             query: (updateUser) => ({
@@ -77,5 +101,5 @@ export const usersApi = createApi({
 });
 
 export const {
-    useGetAllUsersQuery, useLoginUserMutation, useRegisterUserMutation, useLogoutUserMutation, useUpdateRoleMutation, useUpdateUserMutation, useDeleteUserMutation
+    useGetAllUsersQuery, useLoginUserMutation, useRegisterUserMutation, useLogoutUserMutation, useForgotPasswordSendOtpMutation, useForgotPasswordVerifyOtpMutation, useResetPasswordMutation, useUpdateRoleMutation, useUpdateUserMutation, useDeleteUserMutation
 } = usersApi;

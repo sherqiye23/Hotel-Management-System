@@ -7,7 +7,7 @@ export async function POST() {
         const cookieStore = await cookies();
 
         if (cookieStore.get('accessToken') || cookieStore.get('refreshToken')) {
-            const response = NextResponse.json({ message: 'Logged out successfully' });
+            const response = NextResponse.json({ message: 'Logged out successfully' }, { status: 200 });
 
             response.cookies.set('accessToken', '', {
                 httpOnly: true,
@@ -25,7 +25,7 @@ export async function POST() {
             return response;
         }
 
-        return NextResponse.json({ message: 'No tokens found' });
+        return NextResponse.json({ message: 'No tokens found' }, { status: 404 });
     } catch (error: unknown) {
         if (error instanceof mongoose.Error.ValidationError) {
             const errors = Object.values(error.errors).map(el => {

@@ -1,5 +1,5 @@
 'use client'
-import { useMyContext } from "../context/UserInfoContext";
+import { useMyContext } from "@/src/context/UserInfoContext";
 
 export default function Home() {
   const { userInfo, setUserInfo, isLoading } = useMyContext()

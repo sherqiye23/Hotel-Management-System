@@ -1,4 +1,7 @@
 'use client'
+import AboutSection from "@/src/components/Home components/AboutSection";
+import FeedbackSection from "@/src/components/Home components/FeedbackSection";
+import HeroSection from "@/src/components/Home components/HeroSection";
 import { useMyContext } from "@/src/context/UserInfoContext";
 
 export default function Home() {
@@ -10,8 +13,10 @@ export default function Home() {
         <h1 className="text-3xl text-white">loading...</h1>
       </div>
     ) : (
-      <div className="flex justify-center items-center h-screen bg-pink-400">
-        <h1 className="text-4xl text-white">Home Page</h1>
+      <div className="rounded-4xl">
+        <HeroSection />
+        <AboutSection />
+        <FeedbackSection />
       </div>
     )
   );

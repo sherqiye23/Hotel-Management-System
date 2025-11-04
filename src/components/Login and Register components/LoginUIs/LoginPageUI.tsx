@@ -1,5 +1,5 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import styles from "../LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -10,25 +10,7 @@ import { useLoginUserMutation } from "@/src/lib/features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import axios from "axios";
 import { useMyContext } from "@/src/context/UserInfoContext";
-
-type loginFieldsType = {
-    type: string,
-    name: string,
-    placeholder: string
-};
-
-const loginFields: loginFieldsType[] = [
-    {
-        type: 'email',
-        name: 'email',
-        placeholder: 'Email'
-    },
-    {
-        type: 'password',
-        name: 'password',
-        placeholder: 'Password'
-    }
-]
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 type Props = {
     setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -38,6 +20,8 @@ function LoginPageUI({ setPage }: Props) {
     const router = useRouter();
     const [loginUser] = useLoginUserMutation()
     const { setUserInfo } = useMyContext()
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
     return (
         <Formik
             initialValues={{ email: '', password: '', rememberMe: false }}
@@ -76,14 +60,25 @@ function LoginPageUI({ setPage }: Props) {
 
                         <div className={styles.login}>
                             <h2>Login</h2>
-                            {
-                                loginFields.map((field: loginFieldsType) => (
-                                    <div className={styles.inputBx}>
-                                        <Field placeholder={field.placeholder} name={field.name} type={field.type} />
-                                        <ErrorMessage component="div" className={styles.errorMessage} name={field.name} />
+                            <div className={styles.inputBx}>
+                                <Field placeholder='Email' name='email' type='email' />
+                                <ErrorMessage component="div" className={styles.errorMessage} name='email' />
+                            </div>
+                            <div className='w-full'>
+                                <div className={styles.inputBx}>
+                                    <Field
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        placeholder="Password" />
+                                    <div
+                                        className="text-base absolute z-10 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <LuEye /> : <LuEyeClosed />}
                                     </div>
-                                ))
-                            }
+                                </div>
+                                <ErrorMessage name="password" component="div" className={styles.errorMessage} />
+                            </div>
                             <label className={styles.checkbox}>
                                 <Field type="checkbox" name="rememberMe" />
                                 Remember Me

@@ -7,39 +7,26 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useRegisterUserMutation } from '@/src/lib/features/user/userSlice';
+import { useState } from 'react';
+import { LuEye, LuEyeClosed } from 'react-icons/lu';
 
 type registerFieldsType = {
     type: string,
     name: string,
-    placeholder: string
+    placeholder: string,
 };
-
-const registerFields: registerFieldsType[] = [
-    {
-        type: 'text',
-        name: 'firstname',
-        placeholder: 'First Name'
-    },
-    {
-        type: 'text',
-        name: 'lastname',
-        placeholder: 'Last Name'
-    },
-    {
-        type: 'email',
-        name: 'email',
-        placeholder: 'Email'
-    },
-    {
-        type: 'password',
-        name: 'password',
-        placeholder: 'Password'
-    },
-]
 
 const RegisterPageUI: React.FC = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [registerUser] = useRegisterUserMutation()
+
+    const registerFields: registerFieldsType[] = [
+        { type: 'text', name: 'firstname', placeholder: 'First Name' },
+        { type: 'text', name: 'lastname', placeholder: 'Last Name' },
+        { type: 'email', name: 'email', placeholder: 'Email' }
+    ]
+
     return (
         <Formik
             initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
@@ -92,12 +79,27 @@ const RegisterPageUI: React.FC = () => {
                             <h2>SignUp</h2>
                             {
                                 registerFields.map((field: registerFieldsType) => (
-                                    <div className={styles.inputBx}>
+                                    <div className={styles.inputBx} key={field.name}>
                                         <Field placeholder={field.placeholder} name={field.name} type={field.type} />
                                         <ErrorMessage component="div" className={styles.errorMessage} name={field.name} />
                                     </div>
                                 ))
                             }
+                            <div className='w-full'>
+                                <div className={styles.inputBx}>
+                                    <Field
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        placeholder="Password" />
+                                    <div
+                                        className="text-base absolute z-10 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <LuEye /> : <LuEyeClosed />}
+                                    </div>
+                                </div>
+                                <ErrorMessage name="password" component="div" className={styles.errorMessage} />
+                            </div>
                             {/* button */}
                             <div className={styles.inputBx}>
                                 <input type="submit" value="SignUp" />

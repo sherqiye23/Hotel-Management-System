@@ -8,3 +8,10 @@ export interface IUser extends Document {
     isAdmin: boolean,
     reservedRooms: string[]
 }
+
+export interface IFeedback extends Document {
+    fromMail: string,
+    description: string,
+    isRead: boolean,
+    isSoftDeleted: boolean
+}

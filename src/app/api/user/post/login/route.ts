@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
         // if password is correct:
         const payload = {
             id: findedUser._id,
+            email: findedUser.email,
             isAdmin: findedUser.isAdmin,
             firstname: findedUser.firstname,
             lastname: findedUser.lastname

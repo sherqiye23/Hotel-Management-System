@@ -391,6 +391,316 @@
                 }
             }
         },
+        "/api/feedback/get/getall": {
+            "get": {
+                "summary": "Get all feedbacks",
+                "responses": {
+                    "200": {
+                        "description": "List of feedbacks"
+                    }
+                }
+            }
+        },
+        "/api/feedback/get/getbyid/{id}": {
+            "get": {
+                "summary": "Get by id feeback info",
+                "responses": {
+                    "200": {
+                        "description": "Feedback found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feedback"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "404": {
+                        "description": "Token or Feedback not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/feedback/get/getallsoftdeleted": {
+            "get": {
+                "summary": "Get all softdeleted feedbacks",
+                "responses": {
+                    "200": {
+                        "description": "List of feedbacks"
+                    }
+                }
+            }
+        },
+        "/api/feedback/delete/{id}": {
+            "delete": {
+                "summary": "Delete feedback by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback deleted"
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "404": {
+                        "description": "Token or Feedback not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/feedback/softdelete/{id}": {
+            "delete": {
+                "summary": "Soft delete a feedback (admin only)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the feedback to be soft deleted"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback soft deleted successfully"
+                    },
+                    "400": {
+                        "description": "Feedback already soft deleted or validation error"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    },
+                    "403": {
+                        "description": "User is not admin"
+                    },
+                    "404": {
+                        "description": "Feedback or token not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/feedback/post": {
+            "post": {
+                "summary": "Feedback post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fromMail": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "fromMail",
+                                    "description"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Feedback create successfully"
+                    },
+                    "400": {
+                        "description": "Email is required or Please enter a valid email or Feedback description is required or Feedback description maximum 100 characters."
+                    }
+                }
+            }
+        },
+        "/api/feedback/patch": {
+            "patch": {
+                "summary": "Update feedback info",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                },
+                                "required": [
+                                    "id",
+                                    "description"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Feedback updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feedback"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "403": {
+                        "description": "You are not admin"
+                    },
+                    "404": {
+                        "description": "Token or Feedback not found"
+                    },
+                    "400": {
+                        "description": "Feedback description is required or Feedback description maximum 100 characters."
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/feedback/patch/restorebyid/{id}": {
+            "patch": {
+                "summary": "Restore by id feedback",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Feedback restored"
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "403": {
+                        "description": "You are not admin"
+                    },
+                    "404": {
+                        "description": "Token or Feedback not found"
+                    },
+                    "400": {
+                        "description": "Feedback already restored"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/feedback/patch/restoreall": {
+            "patch": {
+                "summary": "Restore all feedbacks",
+                "responses": {
+                    "200": {
+                        "description": "Feedbacks restored"
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "403": {
+                        "description": "You are not admin"
+                    },
+                    "404": {
+                        "description": "Token or Soft deleted feedbacks not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/feedback/patch/read/{id}": {
+            "patch": {
+                "summary": "isRead change feedback",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Feedback marked as read or Feedback marked as unread"
+                    },
+                    "401": {
+                        "description": "Token is invalid"
+                    },
+                    "403": {
+                        "description": "You are not admin"
+                    },
+                    "404": {
+                        "description": "Token or Feedback not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
         "components": {
             "schemas": {
                 "User": {
@@ -409,6 +719,26 @@
                             "type": "string"
                         },
                         "isAdmin": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "Feedback": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "fromMail": {
+                            "type": "string"
+                        },
+                        "isRead": {
+                            "type": "boolean"
+                        },
+                        "isSoftDeleted": {
                             "type": "boolean"
                         }
                     }

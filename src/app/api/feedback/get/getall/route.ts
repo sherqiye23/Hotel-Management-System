@@ -1,9 +1,11 @@
+import { connect } from "@/src/dbConfig/dbConfig";
 import Feedback from "@/src/models/feedbackModel";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
+        connect()
         const feedbacks = await Feedback.find({ isSoftDeleted: false }).sort({ createdAt: -1 });
         return NextResponse.json(feedbacks, { status: 200 });
     } catch (error: unknown) {

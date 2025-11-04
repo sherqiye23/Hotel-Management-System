@@ -21,6 +21,10 @@ export const usersApi = createApi({
             query: () => "get/getall",
             providesTags: ['User'],
         }),
+        getByIdUser: builder.query<IUser, void>({
+            query: (id) => `get/getbyid/${id}`,
+            providesTags: ['User'],
+        }),
         // post requests
         loginUser: builder.mutation<LoginResponse, LoginRequest>({
             query: (newUser) => ({
@@ -68,7 +72,7 @@ export const usersApi = createApi({
                 headers: { 'Content-Type': 'application/json' }
             }),
         }),
-        // put requests
+        // patch requests
         updateUser: builder.mutation({
             query: (updateUser) => ({
                 url: 'patch',
@@ -77,12 +81,6 @@ export const usersApi = createApi({
             }),
             invalidatesTags: ['User'],
         }),
-        // updatePasswordUser: builder.mutation({
-        //     query: ({ userId, oldPassword, newPassword, confirmPassword }) => ({
-        //         url: `put/updatepassword?userId=${userId}&oldPassword=${oldPassword}&newPassword=${newPassword}&confirmPassword=${confirmPassword}`,
-        //         method: 'PUT'
-        //     }),
-        // }),
         updateRole: builder.mutation({
             query: (id) => ({
                 url: `patch/role/${id}`,
@@ -101,5 +99,5 @@ export const usersApi = createApi({
 });
 
 export const {
-    useGetAllUsersQuery, useLoginUserMutation, useRegisterUserMutation, useLogoutUserMutation, useForgotPasswordSendOtpMutation, useForgotPasswordVerifyOtpMutation, useResetPasswordMutation, useUpdateRoleMutation, useUpdateUserMutation, useDeleteUserMutation
+    useGetAllUsersQuery, useGetByIdUserQuery, useLoginUserMutation, useRegisterUserMutation, useLogoutUserMutation, useForgotPasswordSendOtpMutation, useForgotPasswordVerifyOtpMutation, useResetPasswordMutation, useUpdateRoleMutation, useUpdateUserMutation, useDeleteUserMutation
 } = usersApi;

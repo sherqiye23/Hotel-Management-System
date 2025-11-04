@@ -1,13 +1,24 @@
-import { connect } from "@/src/dbConfig/dbConfig";
 import User from "@/src/models/userModel";
 import mongoose from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+interface Context {
+    params: Promise<{
+        id: string;
+    }>;
+}
+
+export async function GET(
+    request: NextRequest,
+    context: Context
+) {
     try {
-        connect()
-        const users = await User.find({});
-        return NextResponse.json(users, { status: 200 });
+        const { id } = await context.params;
+        const user = await User.findById(id);
+        if (!user) {
+            return NextResponse.json({ message: 'User not found' }, { status: 404 });
+        }
+        return NextResponse.json(user, { status: 200 });
     } catch (error: unknown) {
         if (error instanceof mongoose.Error.ValidationError) {
             const errors = Object.values(error.errors).map(el => {

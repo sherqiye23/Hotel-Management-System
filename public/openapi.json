@@ -42,6 +42,29 @@
                 }
             }
         },
+        "/api/user/get/getbyid/{id}": {
+            "get": {
+                "summary": "Get by id user",
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
         "/api/user/delete/{id}": {
             "delete": {
                 "summary": "Delete user by ID",

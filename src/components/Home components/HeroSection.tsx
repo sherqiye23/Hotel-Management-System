@@ -10,10 +10,10 @@ const HeroSection = () => {
                 ></div>
 
                 <div className="relative z-10 text-white flex flex-col items-center px-4">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-3">
+                    <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3">
                         Welcome to comfort - book your stay today.
                     </h1>
-                    <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3">
                         Feel at home, wherever you go
                     </h2>
                     <p className="text-lg md:text-xl mb-8 opacity-90">

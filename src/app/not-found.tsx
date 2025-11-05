@@ -4,12 +4,12 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 const NotFoundPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 text-gray-800">
-      <h1 className="text-[10rem] font-extrabold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-600 leading-none">
+      <h1 className="text-[5rem] sm:text-[10rem] font-extrabold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-600 leading-none">
         404
       </h1>
 
-      <h2 className="text-3xl font-semibold mt-4 mb-2">Oops! Page not found</h2>
-      <p className="text-gray-600 mb-8 max-w-md text-center">
+      <h2 className="text-xl sm:text-3xl font-semibold mt-4 mb-2 px-2">Oops! Page not found</h2>
+      <p className="text-gray-600 mb-8 max-w-md text-center px-2">
         The page you're looking for might have been removed, renamed, or is temporarily unavailable.
       </p>
 

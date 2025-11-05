@@ -67,17 +67,17 @@ export default function FeedbackSection() {
                                         name="description"
                                         type="text"
                                         placeholder="Share your thoughts..."
-                                        className="grow px-4 py-3 text-gray-700 outline-none"
+                                        className="grow px-4 py-1 sm:py-3 text-gray-700 outline-none"
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className={`bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                                    className={`bg-indigo-500 hover:bg-indigo-600 text-white px-2 sm:px-5 py-1 sm:py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                                         }`}
                                 >
-                                    <FaPaperPlane className="text-lg" />
+                                    <FaPaperPlane className="text-sm sm:text-lg" />
                                     Send
                                 </button>
                             </div>

@@ -1,16 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useMyContext } from "@/src/context/UserInfoContext";
+import { usePostFeedbackMutation } from "@/src/lib/features/feedback/feedbackSlice";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
 
 export default function FeedbackSection() {
-    const [message, setMessage] = useState("");
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!message.trim()) return;
-        console.log("Feedback sent:", message);
-        setMessage("");
-    };
+    const router = useRouter()
+    const [postFeedback] = usePostFeedbackMutation()
+    const { userInfo } = useMyContext()
 
     return (
         <footer className="bg-gray-100 text-gray-800 py-16 mt-20">
@@ -22,25 +23,72 @@ export default function FeedbackSection() {
                     Tell us what you think about your experience. Your feedback helps us improve and make every stay better.
                 </p>
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="w-full max-w-md flex items-center bg-white rounded-full shadow-sm border border-gray-200 overflow-hidden"
+                <Formik
+                    initialValues={{ fromMail: '', description: '' }}
+                    validationSchema={Yup.object({
+                        description: Yup.string().required('Required').max(100, 'Must be 100 characters or less'),
+                    })}
+                    onSubmit={async (values, { resetForm }) => {
+                        try {
+                            console.log("a")
+                            if (!userInfo?.email) {
+                                router.push("/login");
+                                return;
+                            }
+
+                            const response = await postFeedback({
+                                fromMail: userInfo.email,
+                                description: values.description.trim(),
+                            }).unwrap();
+
+                            toast.success(response.message);
+                            resetForm();
+                        } catch (error) {
+                            if ((error as FetchBaseQueryError)?.data) {
+                                const err = error as FetchBaseQueryError;
+                                const message =
+                                    (err.data as any)?.message ||
+                                    (err.data as any)?.error ||
+                                    "Something went wrong";
+                                toast.error(message);
+                            } else if (error instanceof Error) {
+                                toast.error(error.message);
+                            } else {
+                                toast.error("Something went wrong");
+                            }
+                        }
+                    }}
                 >
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Share your thoughts..."
-                        className="grow px-4 py-3 text-gray-700 outline-none"
-                    />
-                    <button
-                        type="submit"
-                        className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer"
-                    >
-                        <FaPaperPlane className="text-lg" />
-                        Send
-                    </button>
-                </form>
+                    {({ isSubmitting }) => (
+                        <Form>
+                            <div className="w-full max-w-md flex items-center bg-white rounded-full shadow-sm border border-gray-200 overflow-hidden">
+                                <div className="flex flex-col grow">
+                                    <Field
+                                        name="description"
+                                        type="text"
+                                        placeholder="Share your thoughts..."
+                                        className="grow px-4 py-3 text-gray-700 outline-none"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className={`bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <FaPaperPlane className="text-lg" />
+                                    Send
+                                </button>
+                            </div>
+                            <ErrorMessage
+                                name="description"
+                                component="div"
+                                className="text-[rgb(255,35,35)] font-semibold px-4 pb-1"
+                            />
+                        </Form>
+                    )}
+                </Formik>
 
                 <div className="mt-12 text-sm text-gray-500 text-center">
                     © {new Date().getFullYear()} East Hotel. All rights reserved.

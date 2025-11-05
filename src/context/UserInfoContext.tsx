@@ -20,24 +20,25 @@ const UserInfoContext = ({ children }: Props) => {
                 setUserInfo(res.data);
             } catch (error: unknown) {
                 const axiosError = error as AxiosError;
+
                 if (axiosError.response?.status === 401) {
                     try {
                         await axios.post('/api/user/post/refresh-token', {}, { withCredentials: true });
                         const response = await axios.get('/api/user/get/user', { withCredentials: true });
                         setUserInfo(response.data);
-                    } catch (refreshError) {
+                    } catch {
                         setUserInfo(null);
                     }
                 } else {
                     setUserInfo(null);
                 }
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         };
 
         fetchUser();
-    }, [userInfo]);
+    }, []); 
 
     return (
         <RegisterContext.Provider value={{ userInfo, setUserInfo, isLoading, setIsLoading }}>

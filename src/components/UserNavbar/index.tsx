@@ -6,6 +6,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 type linkArrT = {
     href: string,
@@ -59,10 +60,17 @@ const UserNavbar = () => {
     return (
         <nav className="w-full bg-white shadow-md px-6 py-3 flex items-center justify-between fixed top-0 left-0 z-20">
             {/* Left */}
-            <div className="flex items-center gap-8">
-                <Link href="/" className="text-2xl font-bold text-blue-600">
-                    Logo
+            <div className="flex items-center gap-5">
+                <Link href="/">
+                    {/* Logo */}
+                    <Image
+                        src="/logo/easthotel-logo-Photoroom.png"
+                        width={50}
+                        height={50}
+                        alt="East hotel logo"
+                    />
                 </Link>
+
 
                 <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
                     {

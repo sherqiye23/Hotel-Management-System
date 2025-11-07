@@ -64,7 +64,7 @@ const UserNavbar = () => {
                 <Link href="/">
                     {/* Logo */}
                     <Image
-                        src="/logo/easthotel-logo-Photoroom.png"
+                        src="/logo/easthotel-logo.png"
                         width={50}
                         height={50}
                         alt="East hotel logo"

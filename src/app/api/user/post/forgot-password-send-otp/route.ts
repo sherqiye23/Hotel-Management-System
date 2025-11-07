@@ -1,4 +1,3 @@
-import { connect } from "@/src/dbConfig/dbConfig";
 import cache from "@/src/lib/cache";
 import User from "@/src/models/userModel";
 import { sendMail } from "@/src/utils/mail";
@@ -10,7 +9,6 @@ function generateOtp() {
 }
 export async function POST(request: NextRequest) {
     try {
-        connect()
         const reqBody = await request.json();
         const { email } = reqBody;
 

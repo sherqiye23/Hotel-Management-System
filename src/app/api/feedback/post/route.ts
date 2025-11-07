@@ -1,11 +1,9 @@
-import { connect } from "@/src/dbConfig/dbConfig";
 import Feedback from "@/src/models/feedbackModel";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        connect()
         const reqBody = await request.json();
         const { fromMail, description } = reqBody;
 

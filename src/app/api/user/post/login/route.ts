@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
-import { connect } from "@/src/dbConfig/dbConfig";
 
 export async function POST(request: NextRequest) {
     try {
-        connect()
         const reqBody = await request.json();
         const { email, password, rememberMe } = reqBody;
 

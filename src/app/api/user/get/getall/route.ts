@@ -1,11 +1,9 @@
-import { connect } from "@/src/dbConfig/dbConfig";
 import User from "@/src/models/userModel";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        connect()
         const users = await User.find({});
         return NextResponse.json(users, { status: 200 });
     } catch (error: unknown) {

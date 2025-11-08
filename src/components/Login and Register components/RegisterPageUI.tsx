@@ -1,6 +1,5 @@
 'use client'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import styles from "./LoginRegister.module.css";
 import Link from 'next/link';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -9,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useRegisterUserMutation } from '@/src/lib/features/user/userSlice';
 import { useState } from 'react';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
+import { registerSchema } from '@/src/app/schemas/userSchemas';
 
 type registerFieldsType = {
     type: string,
@@ -30,23 +30,7 @@ const RegisterPageUI: React.FC = () => {
     return (
         <Formik
             initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
-            validationSchema={Yup.object({
-                firstname: Yup.string()
-                    .max(15, 'Must be 15 characters or less')
-                    .required('Required'),
-                lastname: Yup.string()
-                    .max(15, 'Must be 15 characters or less')
-                    .required('Required'),
-                email: Yup.string().email('Invalid email address').required('Required'),
-                password: Yup.string().required("Password is required")
-                    .trim()
-                    .matches(/^\S*$/)
-                    .matches(
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/,
-                        "Min 1 uppercase, 1 lowercase, 1 number & 1 special char"
-                    )
-                    .min(8, "Min 8 chars"),
-            })}
+            validationSchema={registerSchema}
             onSubmit={async (values) => {
                 try {
                     const response = await registerUser(values).unwrap();

@@ -2,10 +2,10 @@
 import React from "react";
 import styles from "../LoginRegister.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import toast from "react-hot-toast";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useForgotPasswordSendOtpMutation } from "@/src/lib/features/user/userSlice";
+import { forgotPasswordSendOtpSchema } from "@/src/app/schemas/userSchemas";
 
 type Props = {
     setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -20,9 +20,7 @@ function InputEmailUI({ setPage, setEmail, setResendTime, setOtpActivityTime }: 
     return (
         <Formik
             initialValues={{ email: '' }}
-            validationSchema={Yup.object({
-                email: Yup.string().email('Invalid email address').required('Required'),
-            })}
+            validationSchema={forgotPasswordSendOtpSchema}
             onSubmit={async (values) => {
                 try {
                     const response = await forgotPasswordSendOtp(values).unwrap();

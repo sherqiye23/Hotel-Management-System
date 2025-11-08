@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import styles from "../LoginRegister.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import toast from "react-hot-toast";
 import { useResetPasswordMutation } from "@/src/lib/features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { resetPasswordSchema } from "@/src/app/schemas/userSchemas";
 
 type Props = {
     email: string;
@@ -26,26 +26,14 @@ function ResetPasswordUI({ email, setPage }: Props) {
     return (
         <Formik
             initialValues={{ newpassword: '', confirmpassword: '' }}
-            validationSchema={Yup.object({
-                newpassword: Yup.string().required("Password is required")
-                    .trim()
-                    .matches(/^\S*$/)
-                    .matches(
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/,
-                        "Must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-                    )
-                    .min(8, "Password is too short - it must be at least 8 characters long"),
-                confirmpassword: Yup.string().trim().required('Confirm password is required'),
-            })}
+            validationSchema={resetPasswordSchema}
             onSubmit={async (values: ResetInfo) => {
-                if (values.newpassword.trim() !== values.confirmpassword.trim()) {
-                    return toast.error('New password and confirm password do not match')
-                }
+                if (values.newpassword !== values.confirmpassword) return toast.error('New password and confirm password do not match');
                 try {
                     const response = await resetPassword({
                         email,
-                        newPassword: values.newpassword,
-                        confirmPassword: values.confirmpassword,
+                        newpassword: values.newpassword,
+                        confirmpassword: values.confirmpassword,
                     }).unwrap();
                     toast.success(response.message)
                     setPage('')

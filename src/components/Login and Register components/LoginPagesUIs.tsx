@@ -20,7 +20,7 @@ const LoginPageUIs = () => {
         try {
             const responseOtp = await forgotPasswordVerifyOtp({
                 email,
-                otp: values.otpCode
+                otpCode: values.otpCode
             }).unwrap();
             toast.success(responseOtp.message)
             setPage('resetPassword')
@@ -45,7 +45,6 @@ const LoginPageUIs = () => {
         setOtpActivityTime(5 * 60)
         try {
             const responseOtp = await forgotPasswordSendOtp({ email }).unwrap();
-            console.log(responseOtp);
             toast.success(responseOtp.message)
         } catch (error) {
             if ((error as FetchBaseQueryError)?.data) {
@@ -65,7 +64,7 @@ const LoginPageUIs = () => {
 
     return (
         page == 'inputEmail' ? (<InputEmailUI setPage={setPage} setEmail={setEmail} setResendTime={setResendTime} setOtpActivityTime={setOtpActivityTime} />)
-            : page == 'verifyOtp' ? (<VerifyOtpUI email={email} resendTime={resendTime} otpActivityTime={otpActivityTime} setResendTime={setResendTime} setOtpActivityTime={setOtpActivityTime} setPage={setPage} resendOtpFunction={resendOtpFunction} onSubmitFunction={onSubmit} />)
+            : page == 'verifyOtp' ? (<VerifyOtpUI email={email} resendTime={resendTime} otpActivityTime={otpActivityTime} setResendTime={setResendTime} setOtpActivityTime={setOtpActivityTime} resendOtpFunction={resendOtpFunction} onSubmitFunction={onSubmit} />)
                 : page == 'resetPassword' ? (<ResetPasswordUI email={email} setPage={setPage} />)
                     : (<LoginPageUI setPage={setPage} />)
     )

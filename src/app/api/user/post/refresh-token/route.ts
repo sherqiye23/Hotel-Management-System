@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
             lastname: decoded.lastname
         };
         const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
-            expiresIn: "1m",
+            expiresIn: "15m",
         });
 
         const res = NextResponse.json({ success: true });
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
             secure: true,
             sameSite: "strict",
             path: "/",
-            maxAge: 60,
+            maxAge: 15 * 60,
         });
 
         return res;

@@ -1,5 +1,6 @@
+import { userIdSchema } from "@/src/app/schemas/userSchemas";
 import User from "@/src/models/userModel";
-import mongoose from "mongoose";
+import { handleError } from "@/src/utils/errorHandler";
 import { NextResponse } from "next/server";
 
 interface Context {
@@ -12,7 +13,9 @@ export async function PATCH(
     context: Context
 ) {
     try {
-        const { id } = await context.params;
+        const reqBody = await context.params;
+        const validatedData = await userIdSchema.validate(reqBody, { abortEarly: false });
+        const { id } = validatedData;
 
         const userFind = await User.findById(id);
         if (!userFind) {
@@ -29,18 +32,6 @@ export async function PATCH(
 
         return NextResponse.json(updatedRole, { status: 200 });
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const errors = Object.values(error.errors).map(el => {
-                if (el instanceof mongoose.Error.ValidatorError) {
-                    return el.message;
-                }
-                return 'Validation error';
-            });
-            return NextResponse.json({ error: errors.join(', ') }, { status: 400 });
-        } else if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-        }
+        return handleError(error)
     }
 }

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from "../LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast";
 import { useLoginUserMutation } from "@/src/lib/features/user/userSlice";
@@ -11,6 +10,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import axios from "axios";
 import { useMyContext } from "@/src/context/UserInfoContext";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { loginSchema } from "@/src/app/schemas/userSchemas";
 
 type Props = {
     setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -25,10 +25,7 @@ function LoginPageUI({ setPage }: Props) {
     return (
         <Formik
             initialValues={{ email: '', password: '', rememberMe: false }}
-            validationSchema={Yup.object({
-                email: Yup.string().email('Invalid email address').required('Required'),
-                password: Yup.string().required('Required'),
-            })}
+            validationSchema={loginSchema}
             onSubmit={async (values) => {
                 try {
                     await loginUser(values).unwrap();

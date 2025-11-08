@@ -1,13 +1,18 @@
 import User from "@/src/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
-import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
+import { loginSchema } from "@/src/app/schemas/userSchemas";
+import { handleError } from "@/src/utils/errorHandler";
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        const { email, password, rememberMe } = reqBody;
+        const validatedData = await loginSchema.validate(
+            reqBody,
+            { abortEarly: false }
+        )
+        const { email, password, rememberMe } = validatedData;
 
         const findedUser = await User.findOne({ email });
         if (!findedUser) {
@@ -35,7 +40,7 @@ export async function POST(request: NextRequest) {
             lastname: findedUser.lastname
         };
         try {
-            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1m' });
+            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
             const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "3d" });
             const response = NextResponse.json({
                 accessToken,
@@ -46,7 +51,7 @@ export async function POST(request: NextRequest) {
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
                 path: "/",
-                maxAge: 60,
+                maxAge: 15 * 60,
             });
             if (rememberMe) {
                 response.cookies.set("refreshToken", refreshToken, {
@@ -59,23 +64,10 @@ export async function POST(request: NextRequest) {
             }
             return response;
         } catch (error) {
-            console.error('Error signing JWT:', error);
-            return NextResponse.json({ message: 'Failed to generate token' }, { status: 500 });
+            return handleError(error)
         }
 
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const errors = Object.values(error.errors).map(el => {
-                if (el instanceof mongoose.Error.ValidatorError) {
-                    return el.message;
-                }
-                return 'Validation error';
-            });
-            return NextResponse.json({ error: errors.join(', ') }, { status: 400 });
-        } else if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-        }
+        return handleError(error)
     }
 }

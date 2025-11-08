@@ -2,10 +2,10 @@
 import React, { useEffect } from "react";
 import styles from "../LoginRegister.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { forgotPasswordVerifyOtpSchema } from "@/src/app/schemas/userSchemas";
 
 export interface OTPInfo {
-    otpCode: number | null,
+    otpCode: string | null,
 }
 
 type Props = {
@@ -14,12 +14,11 @@ type Props = {
     resendTime: number;
     setResendTime: React.Dispatch<React.SetStateAction<number>>;
     setOtpActivityTime: React.Dispatch<React.SetStateAction<number>>;
-    setPage: React.Dispatch<React.SetStateAction<string>>;
     onSubmitFunction: (values: OTPInfo) => Promise<void>;
     resendOtpFunction: () => Promise<void>;
 };
 
-function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtpActivityTime, setPage, onSubmitFunction, resendOtpFunction }: Props) {
+function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtpActivityTime, onSubmitFunction, resendOtpFunction }: Props) {
     const finalEmail = email ? email : 'serqiye.quluzade';
 
     useEffect(() => {
@@ -43,10 +42,8 @@ function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtp
     }, [otpActivityTime]);
     return (
         <Formik
-            initialValues={{ otpCode: null }}
-            validationSchema={Yup.object({
-                otpCode: Yup.number().required('OTP is required'),
-            })}
+            initialValues={{ otpCode: '' }}
+            validationSchema={forgotPasswordVerifyOtpSchema}
             onSubmit={onSubmitFunction}
         >
             <Form>
@@ -78,7 +75,7 @@ function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtp
                                 </p>
                             </div>
                             <div className={styles.inputBx}>
-                                <Field placeholder='OTP' name='otpCode' type='number' />
+                                <Field placeholder='OTP' name='otpCode' type='text' />
                                 <ErrorMessage component="div" className={styles.errorMessage} name='otpCode' />
                             </div>
                             {/* button */}

@@ -1,18 +1,27 @@
+import { forgotPasswordSendOtpSchema, forgotPasswordVerifyOtpSchema } from '@/src/app/schemas/userSchemas';
 import cache from '@/src/lib/cache';
-import mongoose from 'mongoose';
+import { handleError } from '@/src/utils/errorHandler';
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
-        const { email, otp } = reqBody
+        const validatedDataEmail = await forgotPasswordSendOtpSchema.validate(
+            reqBody,
+            { abortEarly: false }
+        )
+        const validatedDataOtp = await forgotPasswordVerifyOtpSchema.validate(
+            reqBody,
+            { abortEarly: false }
+        )
+        const { email } = validatedDataEmail;
+        const { otpCode } = validatedDataOtp;
 
         const cachedOtp = cache.get(email)
-
         if (!cachedOtp) {
             return NextResponse.json({ message: 'OTP expired or not found' }, { status: 400 });
         }
-        if (otp !== cachedOtp) {
+        if (otpCode !== cachedOtp) {
             return NextResponse.json({ message: 'Invalid OTP' }, { status: 400 });
         }
 
@@ -24,18 +33,6 @@ export async function POST(request: NextRequest) {
         })
 
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const errors = Object.values(error.errors).map(el => {
-                if (el instanceof mongoose.Error.ValidatorError) {
-                    return el.message;
-                }
-                return 'Validation error';
-            });
-            return NextResponse.json({ error: errors.join(', ') }, { status: 400 });
-        } else if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-        }
+        return handleError(error)
     }
 }

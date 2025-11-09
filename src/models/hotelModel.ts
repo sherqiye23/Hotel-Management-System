@@ -16,10 +16,6 @@ const hotelSchema = new mongoose.Schema<IHotel>(
             required: [true, 'Hotel description is required'],
             maxlength: 100,
         },
-        reservedStatus: {
-            type: Boolean,
-            default: false,
-        },
         images: {
             type: [String],
             default: []
@@ -28,6 +24,10 @@ const hotelSchema = new mongoose.Schema<IHotel>(
             type: Number,
             required: [true, "Price per night is required"],
             min: 0,
+        },
+        reservedStatus: {
+            type: Boolean,
+            default: false,
         },
         startReservedTime: {
             type: Date,

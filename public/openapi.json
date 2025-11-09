@@ -7,6 +7,9 @@
     "paths": {
         "/api/user/get/getall": {
             "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Get all users",
                 "responses": {
                     "200": {
@@ -17,6 +20,9 @@
         },
         "/api/user/get/user": {
             "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Get current user info",
                 "description": "Returns the currently authenticated user info, excluding the password",
                 "responses": {
@@ -44,6 +50,9 @@
         },
         "/api/user/get/getbyid/{id}": {
             "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Get by id user",
                 "responses": {
                     "200": {
@@ -67,6 +76,9 @@
         },
         "/api/user/delete/{id}": {
             "delete": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Delete user by ID",
                 "parameters": [
                     {
@@ -90,6 +102,9 @@
         },
         "/api/user/post/login": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "User login",
                 "requestBody": {
                     "content": {
@@ -130,6 +145,9 @@
         },
         "/api/user/post/register": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "User register",
                 "requestBody": {
                     "content": {
@@ -172,6 +190,9 @@
         },
         "/api/user/post/logout": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Logout user",
                 "responses": {
                     "200": {
@@ -185,6 +206,9 @@
         },
         "/api/user/post/refresh-token": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Refresh access token",
                 "responses": {
                     "200": {
@@ -201,6 +225,9 @@
         },
         "/api/user/post/forgot-password-send-otp": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Send OTP for password reset",
                 "description": "Generates and sends a 6-digit OTP to the user's email address for password reset. OTP is valid for 5 minutes.",
                 "requestBody": {
@@ -237,6 +264,9 @@
         },
         "/api/user/post/forgot-password-verify-otp": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Verify OTP for password reset",
                 "description": "Verifies the 6-digit OTP code previously sent to the user’s email. If valid, user can proceed to reset password.",
                 "requestBody": {
@@ -278,6 +308,9 @@
         },
         "/api/user/post/reset-password": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Reset user password",
                 "description": "Allows a user to set a new password after successful OTP verification. Password must meet validation rules.",
                 "requestBody": {
@@ -328,6 +361,9 @@
             }
         },
         "/api/user/patch": {
+            "tags": [
+                "User"
+            ],
             "patch": {
                 "summary": "Update user info",
                 "requestBody": {
@@ -383,6 +419,9 @@
         },
         "/api/user/patch/role/{id}": {
             "patch": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Toggle user's admin role",
                 "parameters": [
                     {
@@ -416,6 +455,9 @@
         },
         "/api/feedback/get/getall": {
             "get": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Get all feedbacks",
                 "responses": {
                     "200": {
@@ -426,6 +468,9 @@
         },
         "/api/feedback/get/getbyid/{id}": {
             "get": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Get by id feeback info",
                 "responses": {
                     "200": {
@@ -452,6 +497,9 @@
         },
         "/api/feedback/get/getallsoftdeleted": {
             "get": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Get all softdeleted feedbacks",
                 "responses": {
                     "200": {
@@ -462,6 +510,9 @@
         },
         "/api/feedback/delete/{id}": {
             "delete": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Delete feedback by ID",
                 "parameters": [
                     {
@@ -491,6 +542,9 @@
         },
         "/api/feedback/softdelete/{id}": {
             "delete": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Soft delete a feedback (admin only)",
                 "parameters": [
                     {
@@ -532,6 +586,9 @@
         },
         "/api/feedback/post": {
             "post": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Feedback post",
                 "requestBody": {
                     "content": {
@@ -566,6 +623,9 @@
         },
         "/api/feedback/patch": {
             "patch": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Update feedback info",
                 "requestBody": {
                     "required": true,
@@ -621,6 +681,9 @@
         },
         "/api/feedback/patch/restorebyid/{id}": {
             "patch": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Restore by id feedback",
                 "requestBody": {
                     "required": true,
@@ -664,6 +727,9 @@
         },
         "/api/feedback/patch/restoreall": {
             "patch": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "Restore all feedbacks",
                 "responses": {
                     "200": {
@@ -686,6 +752,9 @@
         },
         "/api/feedback/patch/read/{id}": {
             "patch": {
+                "tags": [
+                    "Feedback"
+                ],
                 "summary": "isRead change feedback",
                 "requestBody": {
                     "required": true,
@@ -720,6 +789,120 @@
                     },
                     "500": {
                         "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/hotel/post": {
+            "post": {
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Create a new Hotel",
+                "description": "Creates a new hotel entry, uploads exactly 4 images to Cloudinary, and saves the hotel data to the database. Requires all data as multipart/form-data.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Adı (Metin Gerekli, dosya değil)",
+                                        "example": "Luxury Bay Hotel"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Açıklaması (Metin Gerekli, dosya değil)",
+                                        "example": "A stunning view of the Mediterranean."
+                                    },
+                                    "pricePerNight": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Gecelik fiyat (Rakam Gerekli, dosya değil)",
+                                        "example": 150.99
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "description": "Yüklenecek **TAM 4 ADET** resim dosyası.",
+                                        "maxItems": 4,
+                                        "minItems": 4,
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "pricePerNight",
+                                    "images"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Hotel successfully created!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hotel successfully created!"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "savedHotel": {
+                                            "type": "object",
+                                            "description": "The newly created hotel document (with Cloudinary image URLs saved).",
+                                            "example": {
+                                                "_id": "60c72b2f9c1e440000a6c3f1",
+                                                "name": "Luxury Bay Hotel",
+                                                "description": "A stunning view of the Mediterranean.",
+                                                "pricePerNight": 150.99,
+                                                "images": [
+                                                    "v1/hotel-images/short-url-1",
+                                                    "v1/hotel-images/short-url-2",
+                                                    "v1/hotel-images/short-url-3",
+                                                    "v1/hotel-images/short-url-4"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation Error (e.g., Exactly 4 photos must be uploaded or invalid format).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Exactly 4 photos must be uploaded."
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server or Database Error"
                     }
                 }
             }

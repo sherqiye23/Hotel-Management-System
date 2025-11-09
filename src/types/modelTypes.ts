@@ -15,3 +15,14 @@ export interface IFeedback extends Document {
     isRead: boolean,
     isSoftDeleted: boolean
 }
+
+export interface IHotel extends Document {
+    name: string;
+    description: string;
+    images: string[];
+    pricePerNight: number;
+    reservedStatus: boolean;
+    startReservedTime?: Date;
+    endReservedTime?: Date;
+    reservedBy?: string;
+}

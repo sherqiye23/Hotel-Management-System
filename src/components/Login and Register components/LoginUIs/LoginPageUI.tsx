@@ -4,13 +4,12 @@ import styles from "../LoginRegister.module.css";
 import Link from 'next/link'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useRouter } from "next/navigation"
-import toast from "react-hot-toast";
 import { useLoginUserMutation } from "@/src/lib/features/user/userSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import axios from "axios";
 import { useMyContext } from "@/src/context/UserInfoContext";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { loginSchema } from "@/src/app/schemas/userSchemas";
+import { handleFormError } from "@/src/utils/handleFormError";
 
 type Props = {
     setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -33,18 +32,7 @@ function LoginPageUI({ setPage }: Props) {
                     setUserInfo(responseUser.data);
                     router.push('/');
                 } catch (error) {
-                    if ((error as FetchBaseQueryError)?.data) {
-                        const err = error as FetchBaseQueryError;
-                        const message =
-                            (err.data as any)?.message ||
-                            (err.data as any)?.error ||
-                            "Something went wrong";
-                        toast.error(message);
-                    } else if (error instanceof Error) {
-                        toast.error(error.message);
-                    } else {
-                        toast.error("Something went wrong");
-                    }
+                    handleFormError(error);
                 }
             }}
         >

@@ -1,6 +1,7 @@
 import { userIdSchema } from "@/src/app/schemas/userSchemas";
 import User from "@/src/models/userModel";
 import { handleError } from "@/src/utils/errorHandler";
+import { verifyAdmin } from "@/src/utils/verifyAdmin";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Context {
@@ -17,6 +18,9 @@ export async function DELETE(
         const reqBody = await context.params;
         const validatedData = await userIdSchema.validate(reqBody, { abortEarly: false });
         const { id } = validatedData;
+
+        const adminCheck = await verifyAdmin();
+        if (adminCheck instanceof NextResponse) return adminCheck;
 
         const deletedUser = await User.findById(id);
         if (!deletedUser) {

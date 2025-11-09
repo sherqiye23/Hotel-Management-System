@@ -4,9 +4,9 @@ import styles from "../LoginRegister.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import toast from "react-hot-toast";
 import { useResetPasswordMutation } from "@/src/lib/features/user/userSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { resetPasswordSchema } from "@/src/app/schemas/userSchemas";
+import { handleFormError } from "@/src/utils/handleFormError";
 
 type Props = {
     email: string;
@@ -38,18 +38,7 @@ function ResetPasswordUI({ email, setPage }: Props) {
                     toast.success(response.message)
                     setPage('')
                 } catch (error) {
-                    if ((error as FetchBaseQueryError)?.data) {
-                        const err = error as FetchBaseQueryError;
-                        const message =
-                            (err.data as any)?.message ||
-                            (err.data as any)?.error ||
-                            "Something went wrong";
-                        toast.error(message);
-                    } else if (error instanceof Error) {
-                        toast.error(error.message);
-                    } else {
-                        toast.error("Something went wrong");
-                    }
+                    handleFormError(error);
                 }
             }}
         >

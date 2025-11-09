@@ -2,11 +2,11 @@
 import Link from 'next/link';
 import { useMyContext } from '@/src/context/UserInfoContext';
 import { useLogoutUserMutation } from '@/src/lib/features/user/userSlice';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import { handleFormError } from '@/src/utils/handleFormError';
 
 type linkArrT = {
     href: string,
@@ -42,18 +42,7 @@ const UserNavbar = () => {
             toast.success(response.message);
             window.location.reload();
         } catch (error) {
-            if ((error as FetchBaseQueryError)?.data) {
-                const err = error as FetchBaseQueryError;
-                const message =
-                    (err.data as any)?.message ||
-                    (err.data as any)?.error ||
-                    "Something went wrong";
-                toast.error(message);
-            } else if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error("Something went wrong");
-            }
+            handleFormError(error);
         }
     }
 

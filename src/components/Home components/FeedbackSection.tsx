@@ -1,13 +1,12 @@
 "use client";
 import { useMyContext } from "@/src/context/UserInfoContext";
 import { usePostFeedbackMutation } from "@/src/lib/features/feedback/feedbackSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
 import { postFeedbacksDescSchema } from "@/src/app/schemas/feedbackSchemas";
+import { handleFormError } from "@/src/utils/handleFormError";
 
 export default function FeedbackSection() {
     const router = useRouter()
@@ -42,18 +41,7 @@ export default function FeedbackSection() {
                             toast.success(response.message);
                             resetForm();
                         } catch (error) {
-                            if ((error as FetchBaseQueryError)?.data) {
-                                const err = error as FetchBaseQueryError;
-                                const message =
-                                    (err.data as any)?.message ||
-                                    (err.data as any)?.error ||
-                                    "Something went wrong";
-                                toast.error(message);
-                            } else if (error instanceof Error) {
-                                toast.error(error.message);
-                            } else {
-                                toast.error("Something went wrong");
-                            }
+                            handleFormError(error);
                         }
                     }}
                 >

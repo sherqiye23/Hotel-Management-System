@@ -6,7 +6,7 @@ import ResetPasswordUI from './LoginUIs/ResetPasswordUI';
 import LoginPageUI from './LoginUIs/LoginPageUI';
 import toast from 'react-hot-toast';
 import { useForgotPasswordSendOtpMutation, useForgotPasswordVerifyOtpMutation } from '@/src/lib/features/user/userSlice';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { handleFormError } from '@/src/utils/handleFormError';
 
 const LoginPageUIs = () => {
     const [page, setPage] = useState<string>('')
@@ -25,18 +25,7 @@ const LoginPageUIs = () => {
             toast.success(responseOtp.message)
             setPage('resetPassword')
         } catch (error) {
-            if ((error as FetchBaseQueryError)?.data) {
-                const err = error as FetchBaseQueryError;
-                const message =
-                    (err.data as any)?.message ||
-                    (err.data as any)?.error ||
-                    "Something went wrong";
-                toast.error(message);
-            } else if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error("Something went wrong");
-            }
+            handleFormError(error);
         }
     };
 
@@ -47,18 +36,7 @@ const LoginPageUIs = () => {
             const responseOtp = await forgotPasswordSendOtp({ email }).unwrap();
             toast.success(responseOtp.message)
         } catch (error) {
-            if ((error as FetchBaseQueryError)?.data) {
-                const err = error as FetchBaseQueryError;
-                const message =
-                    (err.data as any)?.message ||
-                    (err.data as any)?.error ||
-                    "Something went wrong";
-                toast.error(message);
-            } else if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error("Something went wrong");
-            }
+            handleFormError(error);
         }
     }
 

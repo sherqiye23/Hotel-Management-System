@@ -1,5 +1,6 @@
+import { feedbackIdSchema } from "@/src/app/schemas/feedbackSchemas";
 import Feedback from "@/src/models/feedbackModel";
-import mongoose from "mongoose";
+import { handleError } from "@/src/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Context {
@@ -13,25 +14,16 @@ export async function GET(
     context: Context
 ) {
     try {
-        const { id } = await context.params;
+        const reqBody = await context.params;
+        const validatedData = await feedbackIdSchema.validate(reqBody, { abortEarly: false });
+        const { id } = validatedData;
+
         const feedback = await Feedback.findById(id);
         if (!feedback) {
             return NextResponse.json({ message: 'Feedback not found' }, { status: 404 });
         }
         return NextResponse.json(feedback, { status: 200 });
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const errors = Object.values(error.errors).map(el => {
-                if (el instanceof mongoose.Error.ValidatorError) {
-                    return el.message;
-                }
-                return 'Validation error';
-            });
-            return NextResponse.json({ error: errors.join(', ') }, { status: 400 });
-        } else if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-        }
+        return handleError(error)
     }
 }

@@ -1,7 +1,22 @@
-import * as yup from 'yup';
+import * as Yup from 'yup';
 
-export const myApiSchema = yup.object().shape({
-    name: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    age: yup.number().min(18, 'Must be at least 18').required('Age is required'),
+// id
+export const feedbackIdSchema = Yup.object({
+    id: Yup.string()
+        .required('ID is required'),
 });
+
+// post and patch
+export const postFeedbacksDescSchema = Yup.object({
+    description: Yup.string()
+        .trim()
+        .required('Description is required')
+        .max(100, 'Must be 100 characters or less'),
+});
+export const postFeedbacksMailSchema = Yup.object({
+    fromMail: Yup.string()
+        .trim()
+        .email('Invalid email address')
+        .required('Email is required'),
+});
+

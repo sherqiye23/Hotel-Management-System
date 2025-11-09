@@ -1,39 +1,15 @@
+import { postFeedbacksDescSchema, postFeedbacksMailSchema } from "@/src/app/schemas/feedbackSchemas";
 import Feedback from "@/src/models/feedbackModel";
-import mongoose from "mongoose";
+import { handleError } from "@/src/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        const { fromMail, description } = reqBody;
-
-        // check email and description
-        if (!fromMail.trim()) {
-            return NextResponse.json({
-                message: 'Email address is required.',
-                success: false
-            }, { status: 400 });
-        }
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!emailRegex.test(fromMail)) {
-            return NextResponse.json({
-                message: 'Please enter a valid email.',
-                success: false
-            }, { status: 400 });
-        }
-
-        if (!description.trim()) {
-            return NextResponse.json({
-                message: 'Feedback description is required.',
-                success: false
-            }, { status: 400 });
-        }
-        if (description.trim().length > 100) {
-            return NextResponse.json({
-                message: 'Feedback description maximum 100 characters',
-                success: false
-            }, { status: 400 });
-        }
+        const validatedDataMail = await postFeedbacksMailSchema.validate(reqBody, { abortEarly: false });
+        const validatedDataDesc = await postFeedbacksDescSchema.validate(reqBody, { abortEarly: false });
+        const { fromMail } = validatedDataMail;
+        const { description } = validatedDataDesc;
 
         // send (create) feedback
         const newFeedback = new Feedback({
@@ -48,18 +24,6 @@ export async function POST(request: NextRequest) {
         })
 
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const errors = Object.values(error.errors).map(el => {
-                if (el instanceof mongoose.Error.ValidatorError) {
-                    return el.message;
-                }
-                return 'Validation error';
-            });
-            return NextResponse.json({ error: errors.join(', ') }, { status: 400 });
-        } else if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-        }
+        return handleError(error)
     }
 }

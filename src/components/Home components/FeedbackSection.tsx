@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
+import { postFeedbacksDescSchema } from "@/src/app/schemas/feedbackSchemas";
 
 export default function FeedbackSection() {
     const router = useRouter()
@@ -25,12 +26,9 @@ export default function FeedbackSection() {
 
                 <Formik
                     initialValues={{ fromMail: '', description: '' }}
-                    validationSchema={Yup.object({
-                        description: Yup.string().required('Required').max(100, 'Must be 100 characters or less'),
-                    })}
+                    validationSchema={postFeedbacksDescSchema}
                     onSubmit={async (values, { resetForm }) => {
                         try {
-                            console.log("a")
                             if (!userInfo?.email) {
                                 router.push("/login");
                                 return;

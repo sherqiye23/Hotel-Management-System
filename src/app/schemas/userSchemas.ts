@@ -1,5 +1,11 @@
 import * as Yup from 'yup';
 
+// id
+export const userIdSchema = Yup.object({
+    id: Yup.string()
+        .required('ID is required'),
+});
+
 // post
 export const registerSchema = Yup.object({
     firstname: Yup.string()
@@ -68,11 +74,6 @@ export const resetPasswordSchema = Yup.object({
 })
 
 // patch
-export const userIdSchema = Yup.object({
-    id: Yup.string()
-        .required('ID is required'),
-});
-
 export const updateUserSchema = Yup.object({
     firstname: Yup.string()
         .trim()

@@ -2,6 +2,7 @@
 import AboutSection from "@/src/components/Home components/AboutSection";
 import FeedbackSection from "@/src/components/Home components/FeedbackSection";
 import HeroSection from "@/src/components/Home components/HeroSection";
+import Loader from "@/src/components/Loader";
 import { useMyContext } from "@/src/context/UserInfoContext";
 
 export default function Home() {
@@ -9,8 +10,8 @@ export default function Home() {
   console.log(userInfo);
   return (
     isLoading ? (
-      <div className="flex justify-center items-center h-screen bg-gray-950">
-        <h1 className="text-3xl text-white">loading...</h1>
+      <div className="flex justify-center items-center h-[91.5vh] bg-gray-950">
+        <Loader />
       </div>
     ) : (
       <div className="rounded-4xl">

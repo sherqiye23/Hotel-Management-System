@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
-import { IHotel } from "../types/modelTypes";
+import { IRoom } from "../types/modelTypes";
 
-const hotelSchema = new mongoose.Schema<IHotel>(
+const roomSchema = new mongoose.Schema<IRoom>(
     {
         name: {
             type: String,
             trim: true,
-            required: [true, 'Hotel name is required'],
+            required: [true, 'Room name is required'],
             maxlength: 15,
             minlength: 3,
         },
         description: {
             type: String,
             trim: true,
-            required: [true, 'Hotel description is required'],
+            required: [true, 'Room description is required'],
             maxlength: 100,
         },
         images: {
@@ -46,5 +46,5 @@ const hotelSchema = new mongoose.Schema<IHotel>(
     { timestamps: { createdAt: true, updatedAt: false } }
 )
 
-const Hotel = mongoose.models.Hotel || mongoose.model<IHotel>('Hotel', hotelSchema);
-export default Hotel
+const Room = mongoose.models.Room || mongoose.model<IRoom>('Room', roomSchema);
+export default Room

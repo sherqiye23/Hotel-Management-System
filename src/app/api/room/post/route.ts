@@ -1,6 +1,6 @@
-import { postHotelSchema } from "@/src/app/schemas/hotelSchemas";
+import { postRoomSchema } from "@/src/app/schemas/roomSchemas";
 import cloudinary from "@/src/lib/cloudinary";
-import Hotel from "@/src/models/hotelModel";
+import Room from "@/src/models/roomModel";
 import { handleError } from "@/src/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
             pricePerNight: formData.get("pricePerNight") ? Number(formData.get("pricePerNight")) : undefined,
         };
 
-        const validatedData = await postHotelSchema.validate(data, { abortEarly: false });
+        const validatedData = await postRoomSchema.validate(data, { abortEarly: false });
         const { name, description, images, pricePerNight } = validatedData;
 
 
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
                     const result: CloudinaryResultType = await new Promise((resolve, reject) => {
                         const uploadStream = cloudinary.uploader.upload_stream(
-                            { folder: 'hotel-images-easthotel' },
+                            { folder: 'room-images-easthotel' },
                             (error, uploadResult) => {
                                 if (error) return reject(error);
                                 resolve(uploadResult as CloudinaryResultType);
@@ -59,19 +59,19 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        const newHotel = new Hotel({
+        const newRoom = new Room({
             name,
             description,
             images: uploadedImageUrls,
             pricePerNight
         });
 
-        const savedHotel = await newHotel.save()
+        const savedRoom = await newRoom.save()
 
         return NextResponse.json({
-            message: 'Hotel successfully created!',
+            message: 'Room successfully created!',
             success: true,
-            savedHotel
+            savedRoom
         }, { status: 201 }) 
 
     } catch (error: unknown) {

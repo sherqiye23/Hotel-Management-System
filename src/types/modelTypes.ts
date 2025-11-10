@@ -16,7 +16,7 @@ export interface IFeedback extends Document {
     isSoftDeleted: boolean
 }
 
-export interface IHotel extends Document {
+export interface IRoom extends Document {
     name: string;
     description: string;
     images: string[];

@@ -1,13 +1,13 @@
 import * as Yup from 'yup';
 
 // id
-export const hotelIdSchema = Yup.object({
+export const roomIdSchema = Yup.object({
     id: Yup.string()
         .required('ID is required'),
 });
 
 // post
-export const postHotelSchema = Yup.object({
+export const postRoomSchema = Yup.object({
     name: Yup.string()
         .trim()
         .required("Room name is required")

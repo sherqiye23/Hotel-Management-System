@@ -13,7 +13,11 @@ const reservationSchema = new mongoose.Schema<IReservation>(
             type: Date,
             default: null,
         },
-        status: { type: String, enum: ["pending", "confirmed", "cancelled"], default: "pending" }
+        status: { type: String, enum: ["pending", "confirmed", "cancelled"], default: "pending" },
+        isSoftDeleted: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

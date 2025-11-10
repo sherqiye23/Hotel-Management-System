@@ -43,6 +43,10 @@ const roomSchema = new mongoose.Schema<IRoom>(
             type: Number,
             default: 0,
         },
+        isSoftDeleted: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

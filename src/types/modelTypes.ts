@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 export interface IUser extends Document {
     firstname: string,
@@ -6,7 +6,8 @@ export interface IUser extends Document {
     email: string,
     password: string,
     isAdmin: boolean,
-    reservedRooms: string[]
+    reservedRooms: string[],
+    ratings: string[],
 }
 
 export interface IFeedback extends Document {
@@ -21,8 +22,22 @@ export interface IRoom extends Document {
     description: string;
     images: string[];
     pricePerNight: number;
-    reservedStatus: boolean;
+    reservations: string[]
+    ratings: string[];
+    averageRating: number;
+    ratingCount: number;
+}
+
+export interface IRating extends Document {
+    roomId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
+    value: number
+}
+
+export interface IReservation extends Document {
+    roomId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     startReservedTime?: Date;
     endReservedTime?: Date;
-    reservedBy?: string;
+    status: string
 }

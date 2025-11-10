@@ -793,13 +793,13 @@
                 }
             }
         },
-        "/api/hotel/post": {
+        "/api/room/post": {
             "post": {
                 "tags": [
-                    "Hotel"
+                    "Room"
                 ],
-                "summary": "Create a new Hotel",
-                "description": "Creates a new hotel entry, uploads exactly 4 images to Cloudinary, and saves the hotel data to the database. Requires all data as multipart/form-data.",
+                "summary": "Create a new Room",
+                "description": "Creates a new room entry, uploads exactly 4 images to Cloudinary, and saves the room data to the database. Requires all data as multipart/form-data.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -810,7 +810,7 @@
                                     "name": {
                                         "type": "string",
                                         "description": "Adı (Metin Gerekli, dosya değil)",
-                                        "example": "Luxury Bay Hotel"
+                                        "example": "Luxury Bay Room"
                                     },
                                     "description": {
                                         "type": "string",
@@ -846,7 +846,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Hotel successfully created!",
+                        "description": "Room successfully created!",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -854,25 +854,25 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Hotel successfully created!"
+                                            "example": "Room successfully created!"
                                         },
                                         "success": {
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "savedHotel": {
+                                        "savedRoom": {
                                             "type": "object",
-                                            "description": "The newly created hotel document (with Cloudinary image URLs saved).",
+                                            "description": "The newly created room document (with Cloudinary image URLs saved).",
                                             "example": {
                                                 "_id": "60c72b2f9c1e440000a6c3f1",
-                                                "name": "Luxury Bay Hotel",
+                                                "name": "Luxury Bay Room",
                                                 "description": "A stunning view of the Mediterranean.",
                                                 "pricePerNight": 150.99,
                                                 "images": [
-                                                    "v1/hotel-images/short-url-1",
-                                                    "v1/hotel-images/short-url-2",
-                                                    "v1/hotel-images/short-url-3",
-                                                    "v1/hotel-images/short-url-4"
+                                                    "v1/room-images/short-url-1",
+                                                    "v1/room-images/short-url-2",
+                                                    "v1/room-images/short-url-3",
+                                                    "v1/room-images/short-url-4"
                                                 ]
                                             }
                                         }

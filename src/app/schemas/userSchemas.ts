@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 // id
 export const userIdSchema = Yup.object({
     id: Yup.string()
-        .required('ID is required'),
+        .required('User ID is required'),
 });
 
 // post

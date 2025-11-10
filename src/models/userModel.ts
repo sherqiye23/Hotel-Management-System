@@ -33,10 +33,8 @@ const userSchema = new mongoose.Schema<IUser>(
             type: Boolean,
             default: false,
         },
-        reservedRooms: {
-            type: [String],
-            default: []
-        },
+        reservedRooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reservation" }],
+        ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

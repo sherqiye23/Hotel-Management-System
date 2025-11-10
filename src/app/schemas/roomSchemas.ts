@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 // id
 export const roomIdSchema = Yup.object({
     id: Yup.string()
-        .required('ID is required'),
+        .required('Room ID is required'),
 });
 
 // post
@@ -64,3 +64,15 @@ export const postRoomSchema = Yup.object({
 //         .required('Email is required'),
 // });
 
+export const patchRateRoomSchema = Yup.object({
+    value: Yup.number()
+        .required()
+        .min(1, "Rating value minimum 1").max(5, "Rating value maximum 5")
+})
+// export const patchReservedRoomSchema = Yup.object({
+//     user: Yup.string()
+//         .required('User ID is required'),
+//     value: Yup.number()
+//         .required()
+//         .min(0, "Rating value minimum 0").max(5, "Rating value maximum 0")
+// })

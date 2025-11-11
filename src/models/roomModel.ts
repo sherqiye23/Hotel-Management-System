@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import { IRoom } from "../types/modelTypes";
+import Reservation from "./reservationModel";
+import Rating from "./ratingModel";
+import User from "./userModel";
 
 const roomSchema = new mongoose.Schema<IRoom>(
     {
@@ -50,6 +53,35 @@ const roomSchema = new mongoose.Schema<IRoom>(
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
+
+roomSchema.post("findOneAndDelete", async function (room) {
+    if (!room) return;
+
+    const reservations = await Reservation.find({ roomId: room._id })
+    const ratings = await Rating.find({ roomId: room._id })
+
+    await Reservation.deleteMany({ roomId: room._id })
+    await Rating.deleteMany({ roomId: room._id })
+
+    const reservationIds = reservations.map(r => r._id.toString());
+    const ratingIds = ratings.map(r => r._id.toString());
+
+    const users = await User.find()
+
+    for (const user of users) {
+        const undeletedRatings = user.ratings.filter((ratingId: string) => !ratingIds.includes(ratingId.toString()));
+        const undeletedReservations = user.reservations.filter((reservationId: string) => !reservationIds.includes(reservationId.toString()));
+
+        if (
+            undeletedRatings.length !== user.ratings.length ||
+            undeletedReservations.length !== user.reservations.length
+        ) {
+            user.ratings = undeletedRatings;
+            user.reservations = undeletedReservations;
+            await user.save()
+        }
+    }
+});
 
 const Room = mongoose.models.Room || mongoose.model<IRoom>('Room', roomSchema);
 export default Room

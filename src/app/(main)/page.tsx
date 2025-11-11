@@ -3,6 +3,7 @@ import AboutSection from "@/src/components/Home components/AboutSection";
 import FeedbackSection from "@/src/components/Home components/FeedbackSection";
 import HeroSection from "@/src/components/Home components/HeroSection";
 import Loader from "@/src/components/Loader";
+import PaymentElement from "@/src/components/PaymentElement";
 import { useMyContext } from "@/src/context/UserInfoContext";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
     ) : (
       <div className="rounded-4xl">
         <HeroSection />
+        <PaymentElement />
         <AboutSection />
         <FeedbackSection />
       </div>

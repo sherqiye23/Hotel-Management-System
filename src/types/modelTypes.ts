@@ -40,6 +40,7 @@ export interface IReservation extends Document {
     userId: mongoose.Types.ObjectId;
     startReservedTime?: Date;
     endReservedTime?: Date;
-    status: string;
+    status: "pending" | "confirmed" | "cancelled";
     isSoftDeleted: boolean;
+    endingStatusTime: Date | null;
 }

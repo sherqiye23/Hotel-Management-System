@@ -18,6 +18,7 @@ const reservationSchema = new mongoose.Schema<IReservation>(
             type: Boolean,
             default: false,
         },
+        endingStatusTime: { type: Date },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

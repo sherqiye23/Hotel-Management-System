@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #111;
+  background: #efefef;
   width: 100%;
   overflow: hidden;
 }
@@ -29,7 +29,7 @@
 .ring i {
   position: absolute;
   inset: 0;
-  border: 2px solid #fff;
+  border: 2px solid #2a2a2a;
   transition: 0.5s;
 }
 
@@ -86,7 +86,7 @@
 
 .login h2 {
   font-size: 2em;
-  color: #fff;
+  color: #000;
 }
 
 .login .inputBx {
@@ -99,10 +99,11 @@
   width: 100%;
   padding: 7px 20px;
   background: transparent;
-  border: 2px solid #fff;
+  border: 2px solid #000;
   border-radius: 40px;
   font-size: 1.1em;
-  color: #fff;
+  color: #000;
+  font-weight: 600;
   box-shadow: none;
   outline: none;
 }
@@ -110,13 +111,13 @@
 .login .inputBx input[type="submit"] {
   width: 100%;
   background: #0078ff;
-  background: linear-gradient(45deg, #ff357a, #fff172);
+  background: linear-gradient(45deg, #3e98ff, #e9fdff);
   border: none;
   cursor: pointer;
 }
 
 .login .inputBx input::placeholder {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(89, 89, 89, 0.75);
 }
 
 .login .errorMessage {
@@ -128,7 +129,7 @@
   display: flex;
   width: 100%;
   padding: 0px 5px;
-  color: white;
+  color: #000;
   gap: 5px;
 }
 
@@ -142,8 +143,12 @@
 }
 
 .login .links a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
+  font-weight: 600;
+  &:hover {
+    color: #0078ff;
+  }
 }
 
 @media (max-width: 700px) {

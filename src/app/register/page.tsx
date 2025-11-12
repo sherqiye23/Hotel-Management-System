@@ -4,9 +4,7 @@ export const metadata = {
   title: 'SignUp - Hotel Management System',
 };
 const RegisterPage = () => {
-  return (
-    <><RegisterPageUI /></>
-  )
+  return <RegisterPageUI />
 }
 
 export default RegisterPage

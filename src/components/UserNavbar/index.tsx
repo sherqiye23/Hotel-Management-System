@@ -19,8 +19,8 @@ const linkArray: linkArrT[] = [
         pathname: 'Home'
     },
     {
-        href: '/hotels',
-        pathname: 'Hotels'
+        href: '/rooms',
+        pathname: 'Rooms'
     },
     {
         href: '/profile',

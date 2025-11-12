@@ -55,19 +55,19 @@ function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtp
 
                         <div className={styles.login}>
                             <h2 className='font-bold text-lg text-center'>We just sent a code</h2>
-                            <p className='text-center text-white'>Enter the security code we sent to </p>
-                            <p className='text-white text-center'>
-                                <span className="text-white">{finalEmail.split('@')[0][0]}</span>
+                            <p className='text-center'>Enter the security code we sent to </p>
+                            <p className='text-center'>
+                                <span>{finalEmail.split('@')[0][0]}</span>
                                 {
                                     [...Array((finalEmail.split('@')[0].length - 2))].map((_, i) => (
                                         <span key={i}>*</span>
                                     ))
                                 }
-                                <span className="text-white">{finalEmail.split('@')[0][
+                                <span>{finalEmail.split('@')[0][
                                     finalEmail.split('@')[0].length - 1
                                 ]}@{finalEmail.split('@')[1]}</span>
                             </p>
-                            <div className='flex items-center justify-center text-white'>
+                            <div className='flex items-center justify-center'>
                                 <p className='text-lg font-semibold'>
                                     0{Math.floor(otpActivityTime / 60)}
                                     :
@@ -82,11 +82,11 @@ function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtp
                             <div className={styles.inputBx}>
                                 <input type="submit" value="Verify" />
                             </div>
-                            <p className='text-center text-white'>Didn&apos;t receive code?</p>
+                            <p className='text-center'>Didn&apos;t receive code?</p>
                             <div className='flex items-center justify-center'>
                                 <button type='button' disabled={resendTime ? true : false} onClick={() => resendOtpFunction()}
                                     className={`text-blue-500 ${resendTime ? 'cursor-not-allowed' : 'cursor-pointer'}`}>Resend</button>
-                                <p className="text-white"> - 00:
+                                <p> - 00:
                                     {
                                         resendTime < 10 ? `0${resendTime}` : resendTime
                                     }

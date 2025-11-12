@@ -4,7 +4,7 @@ export const metadata = {
   title: 'Login - Hotel Management System',
 };
 const LoginPage = () => {
-  return <><LoginPageUIs /></>
+  return <LoginPageUIs />
 }
 
 export default LoginPage

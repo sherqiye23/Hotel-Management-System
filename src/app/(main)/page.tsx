@@ -9,11 +9,7 @@ export default function Home() {
   const { userInfo, setUserInfo, isLoading } = useMyContext()
   console.log(userInfo);
   return (
-    isLoading ? (
-      <div className="flex justify-center items-center h-[91.5vh] bg-gray-950">
-        <Loader />
-      </div>
-    ) : (
+    isLoading ? <Loader /> : (
       <div className="rounded-4xl">
         <HeroSection />
         {/* <PaymentElement /> */}

@@ -4,6 +4,9 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ReduxProvider from "../lib/provider/ReduxProvider";
 import UserInfoContext from "../context/UserInfoContext";
+import { connect } from "../dbConfig/dbConfig";
+
+await connect();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

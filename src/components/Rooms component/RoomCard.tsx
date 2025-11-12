@@ -1,20 +1,13 @@
 "use client";
 
+import { cloudinaryUrl } from "@/src/lib/urls";
+import { IRoom } from "@/src/types/modelTypes";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-interface Room {
-    _id: string;
-    name: string;
-    description: string;
-    images: string[];
-    pricePerNight: number;
-    averageRating: number;
-}
-
 interface RoomCardProps {
-    room: Room;
+    room: IRoom;
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
@@ -24,7 +17,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
             <div className="relative h-48 w-full">
                 <Image
-                    src={room.images[0] || "/placeholder.jpg"}
+                    src={cloudinaryUrl + room.images[0]}
                     alt={room.name}
                     fill
                     className="object-cover"
@@ -47,9 +40,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
                         {room.averageRating.toFixed(1)}
                     </span>
                 </div>
-                <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-                    {room.description}
-                </p>
                 <div className="flex justify-between items-center">
                     <span className="font-semibold text-blue-600">
                         ${room.pricePerNight}/night

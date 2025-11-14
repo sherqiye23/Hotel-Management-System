@@ -866,6 +866,7 @@
                                             "example": {
                                                 "_id": "60c72b2f9c1e440000a6c3f1",
                                                 "name": "Luxury Bay Room",
+                                                "slug": "luxury-bay-room",
                                                 "description": "A stunning view of the Mediterranean.",
                                                 "pricePerNight": 150.99,
                                                 "images": [

@@ -28,6 +28,10 @@ export const roomsApi = createApi({
             query: (id) => `get/getbyid/${id}`,
             providesTags: ['Room'],
         }),
+        getBySlugRoom: builder.query<IRoom, string>({
+            query: (slug) => `get/getbyslug/${slug}`,
+            providesTags: ['Room'],
+        }),
         // post requests
         postRoom: builder.mutation({
             query: (newRoom) => ({
@@ -65,5 +69,5 @@ export const roomsApi = createApi({
 });
 
 export const {
-    useGetAllRoomsQuery, useGetAllSoftDeletedRoomsQuery, useGetByIdRoomQuery, usePostRoomMutation, useRateRoomMutation, useDeleteRoomMutation, useSoftDeleteRoomMutation
+    useGetAllRoomsQuery, useGetAllSoftDeletedRoomsQuery, useGetByIdRoomQuery, useGetBySlugRoomQuery, usePostRoomMutation, useRateRoomMutation, useDeleteRoomMutation, useSoftDeleteRoomMutation
 } = roomsApi;

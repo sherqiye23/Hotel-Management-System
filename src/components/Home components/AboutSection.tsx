@@ -19,7 +19,7 @@ export default function AboutSection() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
                 {stats.map((item, index) => (
                     <div key={index}>
-                        <p className="text-2xl sm:text-4xl font-extrabold text-indigo-600">
+                        <p className="text-2xl sm:text-4xl font-extrabold text-(--element-bg)">
                             <CountUp end={item.number} duration={2.5} separator="," />+
                         </p>
                         <p className="text-gray-500">{item.label}</p>

@@ -1,16 +1,17 @@
 "use client";
-
 import { cloudinaryUrl } from "@/src/lib/urls";
 import { IRoom } from "@/src/types/modelTypes";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface RoomCardProps {
     room: IRoom;
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+    const router = useRouter()
     const stars = Array.from({ length: 5 }, (_, i) => i + 1);
 
     return (
@@ -31,8 +32,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
                             key={star}
                             size={18}
                             className={`${room.averageRating >= star
-                                    ? "text-yellow-400 fill-yellow-400"
-                                    : "text-gray-300"
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-gray-300"
                                 }`}
                         />
                     ))}
@@ -41,10 +42,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
                     </span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="font-semibold text-blue-600">
+                    <span className="font-semibold text-(--element-bg)">
                         ${room.pricePerNight}/night
                     </span>
-                    <button className="bg-blue-600 text-white text-sm px-3 py-1 rounded-lg hover:bg-blue-700 transition">
+                    <button onClick={() => router.push(`/rooms/${room.slug}`)}
+                        className="bg-(--element-bg) text-white text-sm px-3 py-1 rounded-lg hover:bg-(--element-bg-hover) transition">
                         View Details
                     </button>
                 </div>

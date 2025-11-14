@@ -12,6 +12,10 @@ const roomSchema = new mongoose.Schema<IRoom>(
             required: [true, 'Room name is required'],
             maxlength: 15,
             minlength: 3,
+            unique: true
+        },
+        slug: {
+            type: String,
         },
         description: {
             type: String,

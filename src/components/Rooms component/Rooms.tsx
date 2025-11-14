@@ -27,7 +27,7 @@ export default function Rooms() {
           <div className="flex flex-wrap gap-3">
             <select className="border rounded-lg px-3 py-2 text-sm">
               <option>Sort by</option>
-              <option>Price: Low to High</option>
+              <option className="p-2 shadow-[0_0_10px_100px_#1882A8_inset]">Price: Low to High</option>
               <option>Price: High to Low</option>
               <option>Rating</option>
             </select>

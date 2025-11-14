@@ -6,6 +6,12 @@ export const roomIdSchema = Yup.object({
         .required('Room ID is required'),
 });
 
+// id
+export const roomSlugSchema = Yup.object({
+    slug: Yup.string()
+        .required('Room slug is required'),
+});
+
 // post
 export const postRoomSchema = Yup.object({
     name: Yup.string()
@@ -36,43 +42,10 @@ export const postRoomSchema = Yup.object({
     pricePerNight: Yup.number()
         .required("Price per night is required")
         .min(0, "Price per night cannot be negative"),
-
-    // reservedStatus: Yup.boolean().default(false),
-
-    // startReservedTime: Yup.date()
-    //     .nullable()
-    //     .notRequired(),
-
-    // endReservedTime: Yup.date()
-    //     .nullable()
-    //     .notRequired()
-    //     .when("startReservedTime", (startReservedTime, schema) =>
-    //         startReservedTime
-    //             ? schema.min(startReservedTime, "End date cannot be before start date")
-    //             : schema
-    //     ),
-
-    // reservedBy: Yup.string()
-    //     .nullable()
-    //     .notRequired(),
 });
-
-// export const postFeedbacksMailSchema = Yup.object({
-//     fromMail: Yup.string()
-//         .trim()
-//         .email('Invalid email address')
-//         .required('Email is required'),
-// });
 
 export const patchRateRoomSchema = Yup.object({
     value: Yup.number()
         .required()
         .min(1, "Rating value minimum 1").max(5, "Rating value maximum 5")
 })
-// export const patchReservedRoomSchema = Yup.object({
-//     user: Yup.string()
-//         .required('User ID is required'),
-//     value: Yup.number()
-//         .required()
-//         .min(0, "Rating value minimum 0").max(5, "Rating value maximum 0")
-// })

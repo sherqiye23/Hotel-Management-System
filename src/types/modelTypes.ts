@@ -20,6 +20,7 @@ export interface IFeedback extends Document {
 export interface IRoom extends Document {
     _id: string,
     name: string;
+    slug: string;
     description: string;
     images: string[];
     pricePerNight: number;

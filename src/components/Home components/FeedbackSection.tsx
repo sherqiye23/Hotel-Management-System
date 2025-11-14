@@ -60,7 +60,7 @@ export default function FeedbackSection() {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className={`bg-indigo-500 hover:bg-indigo-600 text-white px-2 sm:px-5 py-1 sm:py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                                    className={`bg-(--element-bg) hover:bg-(--element-bg-hover) text-white px-2 sm:px-5 py-1 sm:py-3 flex items-center gap-2 rounded-r-full transition-all duration-200 cursor-pointer ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                                         }`}
                                 >
                                     <FaPaperPlane className="text-sm sm:text-lg" />
@@ -77,7 +77,7 @@ export default function FeedbackSection() {
                 </Formik>
 
                 <div className="mt-12 text-sm text-gray-500 text-center">
-                    © {new Date().getFullYear()} East Hotel. All rights reserved.
+                    © 2025 East Hotel. All rights reserved.
                 </div>
             </div>
         </footer>

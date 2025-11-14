@@ -22,6 +22,14 @@ export async function POST(request: NextRequest) {
         const validatedData = await postRoomSchema.validate(data, { abortEarly: false });
         const { name, description, images, pricePerNight } = validatedData;
 
+        const room = await Room.findOne({ name }).lean();;
+        if (room) {
+            return NextResponse.json(
+                { message: 'Room already exists', success: false },
+                { status: 400 },
+            )
+        }
+        const slug = name.toLowerCase().replace(/\s+/g, "-")
 
         let uploadedImageUrls: string[] = [];
         if (images && images.length > 0) {
@@ -61,6 +69,7 @@ export async function POST(request: NextRequest) {
 
         const newRoom = new Room({
             name,
+            slug,
             description,
             images: uploadedImageUrls,
             pricePerNight
@@ -72,7 +81,7 @@ export async function POST(request: NextRequest) {
             message: 'Room successfully created!',
             success: true,
             savedRoom
-        }, { status: 201 }) 
+        }, { status: 201 })
 
     } catch (error: unknown) {
         return handleError(error)

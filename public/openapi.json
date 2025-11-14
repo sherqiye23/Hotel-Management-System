@@ -908,6 +908,142 @@
                 }
             }
         },
+        "/api/room/patch/{id}": {
+            "patch": {
+                "tags": [
+                    "Room"
+                ],
+                "summary": "Update an existing room",
+                "description": "Updates an existing room's information. Accepts multipart/form-data. If new images are uploaded, old images are removed from Cloudinary. If an empty string is provided for images, the old images are kept.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Room ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Yeni ad (optional)",
+                                        "example": "Updated Luxury Room"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Yeni açıqlama (optional)",
+                                        "example": "Updated room description."
+                                    },
+                                    "pricePerNight": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Yeni gecəlik qiymət (optional)",
+                                        "example": 189.50
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "description": "Yeni şəkillər. Əgər yeni real şəkil yüklənsə, köhnələri silir. Boş string göndərilsə, köhnə şəkillər saxlanılır.",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Room successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Room updated successfully"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "updatedRoom": {
+                                            "type": "object",
+                                            "description": "Updated room document",
+                                            "example": {
+                                                "_id": "60c72b2f9c1e440000a6c3f1",
+                                                "name": "Updated Luxury Room",
+                                                "slug": "updated-luxury-room",
+                                                "description": "Updated room description.",
+                                                "pricePerNight": 189.50,
+                                                "images": [
+                                                    "v1/room-images/new-url-1",
+                                                    "v1/room-images/new-url-2"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or bad input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid room ID"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Room not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Room not found"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server or database error"
+                    }
+                }
+            }
+        },
         "components": {
             "schemas": {
                 "User": {

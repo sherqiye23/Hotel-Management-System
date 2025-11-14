@@ -1,13 +1,9 @@
 import { postRoomSchema } from "@/src/app/schemas/roomSchemas";
-import cloudinary from "@/src/lib/cloudinary";
 import Room from "@/src/models/roomModel";
 import { handleError } from "@/src/utils/errorHandler";
+import { uploadImageToCloudinary } from "@/src/utils/uploadImageToCloudinary";
+import { verifyAdmin } from "@/src/utils/verifyAdmin";
 import { NextRequest, NextResponse } from "next/server";
-
-type CloudinaryResultType = {
-    secure_url: string;
-    public_id: string;
-};
 
 export async function POST(request: NextRequest) {
     try {
@@ -22,6 +18,11 @@ export async function POST(request: NextRequest) {
         const validatedData = await postRoomSchema.validate(data, { abortEarly: false });
         const { name, description, images, pricePerNight } = validatedData;
 
+        // admin check
+        const adminCheck = await verifyAdmin();
+        if (adminCheck instanceof NextResponse) return adminCheck;
+
+        // room check
         const room = await Room.findOne({ name }).lean();;
         if (room) {
             return NextResponse.json(
@@ -35,28 +36,7 @@ export async function POST(request: NextRequest) {
         if (images && images.length > 0) {
             for (const img of images) {
                 if (img instanceof File) {
-                    const arrayBuffer = await img.arrayBuffer();
-                    const buffer = Buffer.from(arrayBuffer);
-
-                    const result: CloudinaryResultType = await new Promise((resolve, reject) => {
-                        const uploadStream = cloudinary.uploader.upload_stream(
-                            { folder: 'room-images-easthotel' },
-                            (error, uploadResult) => {
-                                if (error) return reject(error);
-                                resolve(uploadResult as CloudinaryResultType);
-                            }
-                        );
-                        uploadStream.end(buffer);
-                    });
-
-                    const fullImageUrl = result.secure_url;
-                    const uploadIndex = fullImageUrl.indexOf("/upload/");
-                    let shortImageUrl = fullImageUrl;
-
-                    if (uploadIndex !== -1) {
-                        shortImageUrl = fullImageUrl.substring(uploadIndex + "/upload/".length);
-                    }
-
+                    const shortImageUrl = await uploadImageToCloudinary(img);
                     uploadedImageUrls.push(shortImageUrl);
                 } else {
                     return NextResponse.json({

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useGetBySlugRoomQuery } from "@/src/lib/features/room/roomSlice";
 import Loader from "../../Loader";
 import { cloudinaryUrl } from "@/src/lib/urls";
@@ -52,16 +52,16 @@ export default function RoomDetail() {
                 {/* Slider arrows */}
                 <button
                     onClick={prevSlide}
-                    className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition"
+                    className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition cursor-pointer"
                 >
-                    ‹
+                    <ChevronLeft />
                 </button>
 
                 <button
                     onClick={nextSlide}
-                    className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition"
+                    className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition cursor-pointer"
                 >
-                    ›
+                    <ChevronRight />
                 </button>
 
                 {/* Thumbnails */}

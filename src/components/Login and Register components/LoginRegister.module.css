@@ -110,8 +110,8 @@
 
 .login .inputBx input[type="submit"] {
   width: 100%;
-  background: #0078ff;
-  background: linear-gradient(45deg, #3e98ff, #e9fdff);
+  background-color: #5D9DE5;
+  color: #fff;
   border: none;
   cursor: pointer;
 }
@@ -126,6 +126,7 @@
 }
 
 .login .checkbox {
+  cursor: pointer;
   display: flex;
   width: 100%;
   padding: 0px 5px;
@@ -147,7 +148,7 @@
   text-decoration: none;
   font-weight: 600;
   &:hover {
-    color: #0078ff;
+    color: #5D9DE5;
   }
 }
 

@@ -65,7 +65,7 @@ function LoginPageUI({ setPage }: Props) {
                                 <ErrorMessage name="password" component="div" className={styles.errorMessage} />
                             </div>
                             <label className={styles.checkbox}>
-                                <Field type="checkbox" name="rememberMe" />
+                                <Field type="checkbox" name="rememberMe" className='cursor-pointer' />
                                 Remember Me
                             </label>
                             {/* button */}

@@ -5,8 +5,8 @@ export const roomIdSchema = Yup.object({
     id: Yup.string()
         .required('Room ID is required'),
 });
-
-// id
+export const schemaRoomId = Yup.string().required("roomId is required");
+// slug
 export const roomSlugSchema = Yup.object({
     slug: Yup.string()
         .required('Room slug is required'),

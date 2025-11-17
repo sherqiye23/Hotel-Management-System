@@ -6,8 +6,8 @@ export interface IUser extends Document {
     email: string;
     password: string;
     isAdmin: boolean;
-    reservedRooms: string[];
-    ratings: string[];
+    reservedRooms: mongoose.Types.ObjectId[];
+    ratings: mongoose.Types.ObjectId[];
 }
 
 export interface IFeedback extends Document {
@@ -18,14 +18,14 @@ export interface IFeedback extends Document {
 }
 
 export interface IRoom extends Document {
-    _id: string,
+    _id: mongoose.Types.ObjectId,
     name: string;
     slug: string;
     description: string;
     images: string[];
     pricePerNight: number;
-    reservations: string[]
-    ratings: string[];
+    reservations: mongoose.Types.ObjectId[]
+    ratings: mongoose.Types.ObjectId[];
     averageRating: number;
     ratingCount: number;
     isSoftDeleted: boolean;
@@ -40,8 +40,8 @@ export interface IRating extends Document {
 export interface IReservation extends Document {
     roomId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
-    startReservedTime?: Date;
-    endReservedTime?: Date;
+    startReservedTime: Date;
+    endReservedTime: Date;
     status: "pending" | "confirmed" | "cancelled";
     isSoftDeleted: boolean;
     endingStatusTime: Date | null;

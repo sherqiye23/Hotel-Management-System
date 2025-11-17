@@ -5,6 +5,7 @@ export const userIdSchema = Yup.object({
     id: Yup.string()
         .required('User ID is required'),
 });
+export const schemaUserId = Yup.string().required("userId is required");
 
 // post
 export const registerSchema = Yup.object({

@@ -22,16 +22,16 @@ const reservationSchema = new mongoose.Schema<IReservation>(
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
-
 reservationSchema.pre("save", function (next) {
     if (this.startReservedTime) {
-        this.startReservedTime.setHours(12, 0, 0, 0);
+        this.startReservedTime.setUTCHours(12, 0, 0, 0);
     }
     if (this.endReservedTime) {
-        this.endReservedTime.setHours(12, 0, 0, 0);
+        this.endReservedTime.setUTCHours(12, 0, 0, 0);
     }
     next();
 });
+
 
 const Reservation = mongoose.models.Reservation || mongoose.model<IReservation>('Reservation', reservationSchema);
 export default Reservation

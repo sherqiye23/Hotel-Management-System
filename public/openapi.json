@@ -361,10 +361,10 @@
             }
         },
         "/api/user/patch": {
-            "tags": [
-                "User"
-            ],
             "patch": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Update user info",
                 "requestBody": {
                     "required": true,
@@ -1040,6 +1040,177 @@
                     },
                     "500": {
                         "description": "Server or database error"
+                    }
+                }
+            }
+        },
+        "/api/reservation/post": {
+            "post": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Post reservation",
+                "description": "Creates a reservation for a user on a specific room, validates dates, checks for overlaps, and sets status to pending.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "roomId": {
+                                        "type": "string",
+                                        "description": "Room ID (roomId)"
+                                    },
+                                    "userId": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "startReservedTime": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "endReservedTime": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "required": [
+                                    "roomId",
+                                    "userId",
+                                    "startReservedTime",
+                                    "endReservedTime"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reservation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "reservationId": {
+                                            "type": "string"
+                                        },
+                                        "totalPrice": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Overlap or invalid data"
+                    },
+                    "404": {
+                        "description": "Room or User not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/reservation/post/confirm/{id}": {
+            "post": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Confirm a pending reservation",
+                "description": "Confirms a reservation after successful payment.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Reservation ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reservation confirmed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Reservation not found or already finalized"
+                    }
+                }
+            }
+        },
+        "/api/payment": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Create Stripe PaymentIntent for a reservation",
+                "description": "Creates a Stripe PaymentIntent for a reservation and returns the client secret.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reservationId": {
+                                        "type": "string",
+                                        "description": "Reservation ID"
+                                    },
+                                    "totalPrice": {
+                                        "type": "number",
+                                        "description": "Total price of the reservation"
+                                    }
+                                },
+                                "required": [
+                                    "id",
+                                    "totalPrice"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "PaymentIntent created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "clientSecret": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Reservation cannot be paid"
+                    },
+                    "404": {
+                        "description": "Reservation not found"
+                    },
+                    "500": {
+                        "description": "Stripe PaymentIntent creation failed"
                     }
                 }
             }

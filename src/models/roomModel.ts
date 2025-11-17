@@ -21,7 +21,7 @@ const roomSchema = new mongoose.Schema<IRoom>(
             type: String,
             trim: true,
             required: [true, 'Room description is required'],
-            maxlength: 100,
+            maxlength: 600,
         },
         images: {
             type: [String],

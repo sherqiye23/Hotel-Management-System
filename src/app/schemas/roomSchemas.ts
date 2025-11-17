@@ -23,7 +23,7 @@ export const postRoomSchema = Yup.object({
     description: Yup.string()
         .trim()
         .required("Room description is required")
-        .max(100, "Description must be at most 100 characters"),
+        .max(600, "Description must be at most 600 characters"),
 
     images: Yup.array()
         .required("Exactly 4 photos must be uploaded.")
@@ -44,7 +44,7 @@ export const postRoomSchema = Yup.object({
         .min(0, "Price per night cannot be negative"),
 });
 
-// post
+// patch
 export const patchRoomSchema = Yup.object({
     name: Yup.string()
         .trim()
@@ -55,7 +55,7 @@ export const patchRoomSchema = Yup.object({
     description: Yup.string()
         .trim()
         .required("Room description is required")
-        .max(100, "Description must be at most 100 characters"),
+        .max(600, "Description must be at most 600 characters"),
 
     images: Yup.array()
         .required("Exactly 4 photos must be uploaded.")

@@ -3,12 +3,7 @@ import { handleError } from "@/src/utils/errorHandler";
 import { verifyAdmin } from "@/src/utils/verifyAdmin";
 import { roomIdSchema } from "@/src/app/schemas/roomSchemas";
 import Room from "@/src/models/roomModel";
-
-interface Context {
-    params: Promise<{
-        id: string;
-    }>;
-}
+import { Context } from "@/src/types/contextTypes";
 
 export async function DELETE(
     request: NextRequest,

@@ -1,13 +1,8 @@
 import { roomIdSchema } from "@/src/app/schemas/roomSchemas";
 import Room from "@/src/models/roomModel";
+import { Context } from "@/src/types/contextTypes";
 import { handleError } from "@/src/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
-
-interface Context {
-    params: Promise<{
-        id: string;
-    }>;
-}
 
 export async function GET(
     request: NextRequest,

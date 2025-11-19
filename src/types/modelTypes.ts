@@ -38,7 +38,21 @@ export interface IRating extends Document {
 }
 
 export interface IReservation extends Document {
+    _id:  mongoose.Types.ObjectId;
     roomId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
+    startReservedTime: Date;
+    endReservedTime: Date;
+    status: "pending" | "confirmed" | "cancelled";
+    isSoftDeleted: boolean;
+    endingStatusTime: Date | null;
+    depositPaid: number;
+    remainingAmount: number;
+}
+
+export interface IReservationforMail extends Document {
+    _id:  mongoose.Types.ObjectId;
+    roomId: IRoom;
     userId: mongoose.Types.ObjectId;
     startReservedTime: Date;
     endReservedTime: Date;

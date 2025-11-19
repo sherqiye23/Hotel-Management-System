@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
 import { IReservation } from "../types/modelTypes";
 import Room from "./roomModel";
 import User from "./userModel";
@@ -21,33 +21,47 @@ const reservationSchema = new mongoose.Schema<IReservation>(
             default: false,
         },
         endingStatusTime: { type: Date },
+        depositPaid: { type: Number, default: 0 },  
+        remainingAmount: { type: Number, default: 0 },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
 reservationSchema.pre("save", function (next) {
     if (this.startReservedTime) {
-        this.startReservedTime.setUTCHours(12, 0, 0, 0);
+        this.startReservedTime.setUTCHours(8, 0, 0, 0);
     }
     if (this.endReservedTime) {
-        this.endReservedTime.setUTCHours(12, 0, 0, 0);
+        this.endReservedTime.setUTCHours(8, 0, 0, 0);
     }
     next();
 });
 
-reservationSchema.post("findOneAndDelete", async function (reservation) {
-    if (!reservation) return;
+reservationSchema.post(
+    "findOneAndDelete",
+    async function (reservation: HydratedDocument<IReservation> | null) {
+        if (!reservation) return;
 
-    const room = await Room.findById(reservation.roomId)
-    const user = await User.findById(reservation.userId)
+        const room = await Room.findById(reservation.roomId);
+        const user = await User.findById(reservation.userId);
 
-    const newRoomReservations = room.reservations.filter((res: mongoose.Schema.Types.ObjectId) => res.toString() !== reservation._id.toString())
-    const newUserReservations = user.reservedRooms.filter((res: mongoose.Schema.Types.ObjectId) => res.toString() !== reservation._id.toString())
+        const newRoomReservations = room.reservations.filter(
+            (res: mongoose.Schema.Types.ObjectId) =>
+                res.toString() !== reservation._id.toString()
+        );
 
-    room.reservations = newRoomReservations;
-    user.reservedRooms = newUserReservations;
-    await room.save()
-    await user.save()
-});
+        const newUserReservations = user.reservedRooms.filter(
+            (res: mongoose.Schema.Types.ObjectId) =>
+                res.toString() !== reservation._id.toString()
+        );
+
+        room.reservations = newRoomReservations;
+        user.reservedRooms = newUserReservations;
+
+        await room.save();
+        await user.save();
+    }
+);
+
 
 const Reservation = mongoose.models.Reservation || mongoose.model<IReservation>('Reservation', reservationSchema);
 export default Reservation

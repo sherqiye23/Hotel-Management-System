@@ -2,12 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { handleError } from "@/src/utils/errorHandler";
 import { reservationIdSchema } from "@/src/app/schemas/reservationSchema";
 import Reservation from "@/src/models/reservationModel";
-
-interface Context {
-    params: Promise<{
-        id: string;
-    }>;
-}
+import { Context } from "@/src/types/contextTypes";
 
 export async function DELETE(
     request: NextRequest,

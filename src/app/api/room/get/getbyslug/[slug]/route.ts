@@ -2,18 +2,13 @@ import { roomSlugSchema } from "@/src/app/schemas/roomSchemas";
 import Rating from "@/src/models/ratingModel";
 import Reservation from "@/src/models/reservationModel";
 import Room from "@/src/models/roomModel";
+import { ContextSlug } from "@/src/types/contextTypes";
 import { handleError } from "@/src/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
 
-interface Context {
-    params: Promise<{
-        slug: string;
-    }>;
-}
-
 export async function GET(
     request: NextRequest,
-    context: Context
+    context: ContextSlug
 ) {
     try {
         const reqBody = await context.params;

@@ -3,12 +3,7 @@ import Feedback from "@/src/models/feedbackModel";
 import { verifyAdmin } from "@/src/utils/verifyAdmin";
 import { feedbackIdSchema } from "@/src/app/schemas/feedbackSchemas";
 import { handleError } from "@/src/utils/errorHandler";
-
-interface Context {
-    params: Promise<{
-        id: string;
-    }>;
-}
+import { Context } from "@/src/types/contextTypes";
 
 export async function DELETE(
     request: NextRequest,

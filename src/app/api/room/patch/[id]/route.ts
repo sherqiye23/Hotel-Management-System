@@ -6,10 +6,7 @@ import { patchRoomSchema, roomIdSchema } from "@/src/app/schemas/roomSchemas";
 import { verifyAdmin } from "@/src/utils/verifyAdmin";
 import { uploadImageToCloudinary } from "@/src/utils/uploadImageToCloudinary";
 import { deleteImageFromCloudinary } from "@/src/utils/deleteImageFromCloudinary";
-
-interface Context {
-    params: Promise<{ id: string }>;
-}
+import { Context } from "@/src/types/contextTypes";
 
 export async function PATCH(request: NextRequest, context: Context) {
     try {

@@ -9,3 +9,11 @@ export type UserInfoContextStatesType = {
 export interface UserInfoContextType extends RegisterRequest {
     _id: string;
 };
+
+export interface Context {
+    params: Promise<{ id: string }>;
+}
+
+export interface ContextSlug {
+    params: Promise<{ slug: string; }>;
+}

@@ -7,7 +7,7 @@ export const reservationIdSchema = Yup.object({
 });
 export const schemaReservationId = Yup.string().required("reservationId is required");
 
-// post and patch
+// post
 export const newReservationSchema = Yup.object({
     startReservedTime: Yup.date()
         .nullable()
@@ -28,3 +28,10 @@ export const paymentReservationSchema = Yup.object({
         .min(0, "Total price cannot be negative")
         .required("Total price is required"),
 });
+
+export const statusConfirmedMailSchema = Yup.object({
+    email: Yup.string()
+        .trim()
+        .email('Invalid email address')
+        .required('Email is required'),
+})

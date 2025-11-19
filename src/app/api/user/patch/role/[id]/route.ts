@@ -1,13 +1,8 @@
 import { userIdSchema } from "@/src/app/schemas/userSchemas";
 import User from "@/src/models/userModel";
+import { Context } from "@/src/types/contextTypes";
 import { handleError } from "@/src/utils/errorHandler";
 import { NextResponse } from "next/server";
-
-interface Context {
-    params: Promise<{
-        id: string;
-    }>;
-}
 
 export async function PATCH(
     context: Context

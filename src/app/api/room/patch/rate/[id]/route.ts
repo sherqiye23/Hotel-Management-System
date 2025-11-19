@@ -5,10 +5,7 @@ import Room from "@/src/models/roomModel";
 import { userIdSchema } from "@/src/app/schemas/userSchemas";
 import Rating from "@/src/models/ratingModel";
 import User from "@/src/models/userModel";
-
-interface Context {
-    params: Promise<{ id: string; }>;
-}
+import { Context } from "@/src/types/contextTypes";
 
 export async function PATCH(
     request: NextRequest,

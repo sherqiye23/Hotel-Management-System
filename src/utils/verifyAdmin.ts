@@ -10,7 +10,7 @@ export async function verifyAdmin() {
   const token = cookieStore.get("accessToken")?.value;
 
   if (!token) {
-    return NextResponse.json({ message: "Token is not found" }, { status: 404 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {

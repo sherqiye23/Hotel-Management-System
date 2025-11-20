@@ -19,23 +19,28 @@ export async function GET(
         if (!room) {
             return NextResponse.json({ message: 'Room not found' }, { status: 404 });
         }
-        const ratings = await Rating.find({ roomId: room._id });
-        const reservations = await Reservation.find({ roomId: room._id });
 
-        return NextResponse.json(
-            {
-                name: room.name,
-                slug: room.slug,
-                description: room.description,
-                images: room.images,
-                pricePerNight: room.pricePerNight,
-                reservations: reservations,
-                ratings: ratings,
-                averageRating: room.averageRating,
-                ratingCount: room.ratingCount,
-                isSoftDeleted: room.isSoftDeleted,
-                createdAt: room.createdAt,
-            }, { status: 200 });
+        const reservations = await Reservation.find({
+            roomId: room._id,
+            status: { $in: ["pending", "confirmed"] }
+        }).lean();
+        const ratings = await Rating.find({ roomId: room._id });
+
+        return NextResponse.json({
+            id: room._id.toString(),
+            name: room.name,
+            slug: room.slug,
+            description: room.description,
+            images: room.images,
+            pricePerNight: room.pricePerNight,
+            reservations,
+            ratings,
+            averageRating: room.averageRating,
+            ratingCount: room.ratingCount,
+            isSoftDeleted: room.isSoftDeleted,
+            createdAt: room.createdAt,
+        }, { status: 200 });
+
     } catch (error: unknown) {
         return handleError(error)
     }

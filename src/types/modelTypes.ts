@@ -29,6 +29,7 @@ export interface IRoom extends Document {
     averageRating: number;
     ratingCount: number;
     isSoftDeleted: boolean;
+    createdAt: Date
 }
 
 export interface IRating extends Document {

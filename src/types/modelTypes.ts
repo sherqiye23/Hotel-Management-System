@@ -8,6 +8,7 @@ export interface IUser extends Document {
     isAdmin: boolean;
     reservedRooms: mongoose.Types.ObjectId[];
     ratings: mongoose.Types.ObjectId[];
+    refreshToken: string;
 }
 
 export interface IFeedback extends Document {

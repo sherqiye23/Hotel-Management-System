@@ -10,6 +10,7 @@ import getAuthorizedUser from "@/src/utils/getAuthorizedUser";
 export async function POST(req: NextRequest) {
     try {
         const user = await getAuthorizedUser(req);
+        console.log(user)
         if (user instanceof NextResponse) return user;
 
         const reqBody = await req.json();

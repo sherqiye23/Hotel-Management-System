@@ -4,6 +4,7 @@ import bcryptjs from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { loginSchema } from "@/src/app/schemas/userSchemas";
 import { handleError } from "@/src/utils/errorHandler";
+import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
     try {
@@ -41,7 +42,6 @@ export async function POST(request: NextRequest) {
         };
         try {
             const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
-            const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "3d" });
             const response = NextResponse.json({
                 accessToken,
                 success: true,
@@ -54,13 +54,9 @@ export async function POST(request: NextRequest) {
                 maxAge: 15 * 60,
             });
             if (rememberMe) {
-                response.cookies.set("refreshToken", refreshToken, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite: "strict",
-                    path: "/",
-                    maxAge: 3 * 24 * 60 * 60,
-                });
+                const refreshToken = crypto.randomBytes(64).toString("hex");
+                findedUser.refreshToken = refreshToken;
+                await findedUser.save()
             }
             return response;
         } catch (error) {

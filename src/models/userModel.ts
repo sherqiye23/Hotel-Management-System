@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema<IUser>(
             default: false,
         },
         reservedRooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reservation" }],
-        ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }]
+        ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
+        refreshToken: { type: String, default: null }
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

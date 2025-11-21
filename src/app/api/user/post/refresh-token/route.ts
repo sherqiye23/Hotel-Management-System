@@ -1,28 +1,33 @@
+import { userIdSchema } from "@/src/app/schemas/userSchemas";
+import User from "@/src/models/userModel";
+import { MyJwtPayload } from "@/src/types/jwtType";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-interface RefreshToken {
-    id: string;
-    firstname: string;
-    lastname: string;
-    isAdmin: boolean;
-}
-
 export async function POST(request: NextRequest) {
     try {
-        const refreshToken = request.cookies.get('refreshToken')?.value;
+        const accessToken = request.cookies.get('accessToken')?.value;
 
-        if (!refreshToken) {
-            return NextResponse.json({ error: "No Token" }, { status: 401 });
-        }
+        if (!accessToken) return NextResponse.json({ error: "No Token" }, { status: 401 });
 
-        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as RefreshToken;
+        const decoded = jwt.decode(accessToken) as MyJwtPayload | null;
+        if (!decoded || !decoded.id) return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+
+        const validatedData = await userIdSchema.validate({ id: decoded.id }, { abortEarly: false })
+        const { id } = validatedData;
+        const user = await User.findById(id);
+        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 },);
+        if (!user.refreshToken) return NextResponse.json({ message: 'Refresh token not found' }, { status: 404 });
+
+        // if user and refresh token founded
         const payload = {
-            id: decoded.id,
-            isAdmin: decoded.isAdmin,
-            firstname: decoded.firstname,
-            lastname: decoded.lastname
+            id: user._id,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            firstname: user.firstname,
+            lastname: user.lastname,
         };
+
         const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
             expiresIn: "15m",
         });

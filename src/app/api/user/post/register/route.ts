@@ -1,25 +1,24 @@
 import User from "@/src/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from 'bcryptjs';
+import bcryptjs from "bcryptjs";
 import { registerSchema } from "@/src/app/schemas/userSchemas";
 import { handleError } from "@/src/utils/errorHandler";
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        const validatedData = await registerSchema.validate(
-            reqBody,
-            { abortEarly: false }
-        );
+        const validatedData = await registerSchema.validate(reqBody, {
+            abortEarly: false,
+        });
         const { firstname, lastname, email, password } = validatedData;
 
         // check if username or email already exists
-        const user = await User.findOne({ email }).lean();;
+        const user = await User.findOne({ email }).lean();
         if (user) {
             return NextResponse.json(
-                { message: 'E-mail already exists', success: false },
+                { message: "E-mail already exists", success: false },
                 { status: 400 },
-            )
+            );
         }
 
         // hash password if the user follows all the rules
@@ -31,17 +30,19 @@ export async function POST(request: NextRequest) {
             firstname,
             lastname,
             email,
-            password: hashedPassword
+            password: hashedPassword,
         });
-        const savedUser = await newUser.save()
+        const savedUser = await newUser.save();
         const { password: _, ...userWithoutPassword } = savedUser.toObject();
-        return NextResponse.json({
-            message: 'SignUp successfully!',
-            success: true,
-            user: userWithoutPassword
-        }, { status: 201 });
-
+        return NextResponse.json(
+            {
+                message: "SignUp successfully!",
+                success: true,
+                user: userWithoutPassword,
+            },
+            { status: 201 },
+        );
     } catch (error: unknown) {
-        return handleError(error)
+        return handleError(error);
     }
 }

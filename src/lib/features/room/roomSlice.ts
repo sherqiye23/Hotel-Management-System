@@ -50,6 +50,14 @@ export const roomsApi = createApi({
                 headers: { 'Content-Type': 'application/json' }
             }),
         }),
+        patchRoom: builder.mutation({
+            query: ({ id, patchBody }) => ({
+                url: `patch/${id}`,
+                method: 'PATCH',
+                body: patchBody,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }),
+        }),
         // delete requests
         deleteRoom: builder.mutation({
             query: (id) => ({

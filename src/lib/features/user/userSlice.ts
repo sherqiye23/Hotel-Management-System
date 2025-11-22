@@ -1,5 +1,5 @@
 import { IUser } from "@/src/types/modelTypes";
-import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "@/src/types/rtkSlicesTypes";
+import { LoginRequest, LoginResponse, messageResponse, RegisterRequest } from "@/src/types/rtkSlicesTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const usersApi = createApi({
@@ -34,7 +34,7 @@ export const usersApi = createApi({
                 headers: { 'Content-Type': 'application/json' }
             }),
         }),
-        registerUser: builder.mutation<RegisterResponse, RegisterRequest>({
+        registerUser: builder.mutation<messageResponse, RegisterRequest>({
             query: (newUser) => ({
                 url: 'post/register',
                 method: 'POST',

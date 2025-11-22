@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
             return handleError(error)
         }
 
-        return NextResponse.json({ message: "OTP sent. Validity period is 5 minutes" });
+        return NextResponse.json({ message: "OTP sent. Validity period is 5 minutes" }, {status: 200});
 
     } catch (error: unknown) {
         return handleError(error)

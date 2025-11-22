@@ -12,7 +12,7 @@ export async function POST(
     context: Context
 ) {
     try {
-        // if user's payment successful, the status will be confirmed and smtp
+        // if user's payment successful, the status will be confirmed and send mail
         const reqBody = await context.params;
         const reqBodyMail = await req.json();
         const validatedDataReservationId = await reservationIdSchema.validate(reqBody, { abortEarly: false });

@@ -15,7 +15,7 @@ export interface RegisterRequest {
     email: string;
     password: string;
 }
-export interface RegisterResponse {
+export interface messageResponse {
     message: string;
 }
 export interface UserInfoContextType extends RegisterRequest {

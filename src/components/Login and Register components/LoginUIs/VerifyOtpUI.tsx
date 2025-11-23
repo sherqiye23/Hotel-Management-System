@@ -49,10 +49,6 @@ function VerifyOtpUI({ email, resendTime, otpActivityTime, setResendTime, setOtp
             <Form>
                 <div className={styles.ringContainer}>
                     <div className={styles.ring}>
-                        <i style={{ "--clr": "#00ff0a" } as React.CSSProperties}></i>
-                        <i style={{ "--clr": "#ff0057" } as React.CSSProperties}></i>
-                        <i style={{ "--clr": "#fffd44" } as React.CSSProperties}></i>
-
                         <div className={styles.login}>
                             <h2 className='font-bold text-lg text-center'>We just sent a code</h2>
                             <p className='text-center'>Enter the security code we sent to </p>

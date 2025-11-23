@@ -37,10 +37,6 @@ function InputEmailUI({ setPage, setEmail, setResendTime, setOtpActivityTime }: 
             <Form>
                 <div className={styles.ringContainer}>
                     <div className={styles.ring}>
-                        <i style={{ "--clr": "#00ff0a" } as React.CSSProperties}></i>
-                        <i style={{ "--clr": "#ff0057" } as React.CSSProperties}></i>
-                        <i style={{ "--clr": "#fffd44" } as React.CSSProperties}></i>
-
                         <div className={styles.login}>
                             <h2>Send OTP</h2>
                             <div className={styles.inputBx}>

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
         if (!accessToken) {
             return NextResponse.json(
                 { message: "Token not found" },
-                { status: 404 },
+                { status: 401 },
             );
         }
         let payload: MyJwtPayload;

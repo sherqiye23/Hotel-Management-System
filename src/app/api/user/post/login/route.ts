@@ -9,10 +9,7 @@ import crypto from "crypto";
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        const validatedData = await loginSchema.validate(
-            reqBody,
-            { abortEarly: false }
-        )
+        const validatedData = await loginSchema.validate(reqBody, { abortEarly: false })
         const { email, password, rememberMe } = validatedData;
 
         const findedUser = await User.findOne({ email });
@@ -41,7 +38,7 @@ export async function POST(request: NextRequest) {
             lastname: findedUser.lastname
         };
         try {
-            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
+            const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1m' });
             const response = NextResponse.json({
                 accessToken,
                 success: true,
@@ -51,12 +48,19 @@ export async function POST(request: NextRequest) {
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
                 path: "/",
-                maxAge: 15 * 60,
+                maxAge: 60,
             });
             if (rememberMe) {
-                const refreshToken = crypto.randomBytes(64).toString("hex");
+                const refreshToken = crypto.randomBytes(32).toString("hex");
                 findedUser.refreshToken = refreshToken;
                 await findedUser.save()
+                response.cookies.set("refreshToken", refreshToken, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 3 * 24 * 60 * 60,
+                });
             }
             return response;
         } catch (error) {

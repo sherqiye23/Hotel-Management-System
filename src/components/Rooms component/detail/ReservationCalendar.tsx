@@ -120,7 +120,6 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     }
   };
 
-
   const getDayClass = (date: Date): string => {
     const dateString = formatDate(date);
     let classes = '';

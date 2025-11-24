@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
 
         const nights = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
         const totalPrice = nights * room.pricePerNight;
-        const depositPaid = totalPrice * 0.2
-        const remainingAmount = totalPrice - depositPaid
+        const depositPaid = (totalPrice * 0.2).toFixed(2)
+        const remainingAmount = (totalPrice - Number(depositPaid)).toFixed(2)
 
         const reservation = await Reservation.create({
             roomId,
@@ -47,8 +47,8 @@ export async function POST(req: NextRequest) {
             endReservedTime: end,
             status: "pending",
             endingStatusTime: new Date(Date.now() + 15 * 60 * 1000),
-            depositPaid,
-            remainingAmount,
+            depositPaid: Number(depositPaid),
+            remainingAmount: Number(remainingAmount),
         });
 
         // islemir bu status hemise pending qalir

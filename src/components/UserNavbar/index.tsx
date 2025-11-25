@@ -47,7 +47,7 @@ const UserNavbar = () => {
     }
 
     return (
-        <nav className="w-full bg-white shadow-md px-6 py-3 flex items-center justify-between fixed top-0 left-0 z-20">
+        <nav className="w-full bg-white shadow-md px-6 py-3 flex items-center justify-between fixed top-0 left-0 z-100">
             {/* Left */}
             <div className="flex items-center gap-5">
                 <Link href="/">

@@ -64,5 +64,5 @@ export const reservationApi = createApi({
 });
 
 export const {
-
+    useGetAllReservationQuery, useGetAllSoftDeletedReservationQuery, useGetByIdReservationQuery, usePostReservationMutation, useConfirmReservationMutation, useDeleteReservationMutation, useSoftDeleteReservationMutation
 } = reservationApi;

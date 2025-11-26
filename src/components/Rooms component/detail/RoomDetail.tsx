@@ -10,8 +10,15 @@ import { ReservationCalendar } from "./ReservationCalendar";
 import toast from "react-hot-toast";
 import { IReservation } from "@/src/types/modelTypes";
 import { addDays } from "date-fns";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { usePostReservationMutation } from "@/src/lib/features/reservation/reservationSlice";
+import { handleFormError } from "@/src/utils/handleFormError";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { ResData } from "@/src/app/(main)/rooms/[roomname]/page";
+
+type Props = {
+  setReservationData: React.Dispatch<React.SetStateAction<ResData>>;
+  setShowPayment: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
@@ -20,16 +27,18 @@ const formatDate = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-export default function RoomDetail() {
-  const [open, setOpen] = useState(false);
+export default function RoomDetail({ setShowPayment, setReservationData }: Props) {
+  const [open, setOpen] = useState<boolean>(false);
   const { roomname } = useParams();
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const {
     data: room,
     isLoading,
     isError,
   } = useGetBySlugRoomQuery(`${roomname}`);
+
+  const [postReservation] = usePostReservationMutation()
 
   useEffect(() => {
     if (!isLoading && isError) {
@@ -68,48 +77,33 @@ export default function RoomDetail() {
   );
 
   const handleReservationConfirm = async (startDate: Date, endDate: Date) => {
+    const checkIn = formatDate(startDate);
+    const checkOut = formatDate(endDate);
+    const resData = {
+      roomId: room.id,
+      startReservedTime: checkIn,
+      endReservedTime: checkOut,
+    };
     try {
-      const checkIn = formatDate(startDate);
-      const checkOut = formatDate(endDate);
-      const resData = {
-        roomId: room.id,
-        startReservedTime: checkIn,
-        endReservedTime: checkOut,
-      };
-      console.log(resData);
-      try {
-        const token = Cookies.get("accessToken");
-        console.log(token);
-        console.log("xeyallarin qonagi")
-        const response = await axios.post("/api/reservation/post", resData, {
-          // headers: {
-          //   Authorization: `${token}`
-          // },
-          withCredentials: true,
-        });
-        console.log(response);
-        if (response.status == 200) {
-          toast.success(
-            `Success! Booking confirmed from ${checkIn} to ${checkOut}.`
-          );
-        } else if (response.status == 401) {
-          router.push("/login");
-        }
+      const response = await postReservation(resData).unwrap();
+      toast.success(`Success! Booking confirmed from ${checkIn} to ${checkOut}.`);
+      setReservationData({
+        reservationId: response.reservationId,
+        depositPaid: response.deposidPaid
+      });
+      setShowPayment(true);
+    } catch (error: unknown) {
+      const err = error as FetchBaseQueryError;
+      if ("status" in err && err.status === 401) {
+        router.push("/login");
+        return;
       }
-      catch (error) {
-        console.log(error);
-      }
-    } catch (error) {
-      console.log(error);
-      // if (error.status == 401) {
-      //     router.push('/login')
-      // }
+      handleFormError(error);
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-5 gap-6 mt-4 lg:mt-10">
-      {/* LEFT 2/3: Main Slider */}
       <div className="lg:col-span-3 relative">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg">
           <Image
@@ -120,7 +114,6 @@ export default function RoomDetail() {
           />
         </div>
 
-        {/* Slider arrows */}
         <button
           onClick={prevSlide}
           className="absolute top-2/5 sm:top-1/2 left-4 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition cursor-pointer"
@@ -135,7 +128,6 @@ export default function RoomDetail() {
           <ChevronRight />
         </button>
 
-        {/* Thumbnails */}
         <div className="flex gap-3 mt-4">
           {room.images.map((img, i) => (
             <div
@@ -158,7 +150,6 @@ export default function RoomDetail() {
         </div>
       </div>
 
-      {/* RIGHT 1/3: Info Panel */}
       <div className="lg:col-span-2 bg-white rounded-2xl shadow-md p-6 h-fit border-gray-400">
         <h1 className="text-xl sm:text-2xl font-semibold mb-2">{room.name}</h1>
 

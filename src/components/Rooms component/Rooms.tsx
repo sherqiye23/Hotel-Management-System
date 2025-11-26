@@ -7,7 +7,6 @@ export default function Rooms() {
   const { data, isLoading } = useGetAllRoomsQuery()
   console.log(data)
 
-
   return (
     isLoading ? <Loader /> : (
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
@@ -40,9 +39,15 @@ export default function Rooms() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(data ?? []).map((room) => (
-            <RoomCard room={room} />
-          ))}
+          {
+            data?.length ? (
+              data.map((room) => (
+                <RoomCard key={room.id} room={room} />
+              ))
+            ) : (
+              <h1 className="text-3xl font-bold">No Room</h1>
+            )
+          }
         </div>
       </div>
     )

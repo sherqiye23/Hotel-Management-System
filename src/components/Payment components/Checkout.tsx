@@ -66,9 +66,10 @@ function PaymentForm() {
 
 interface CheckoutFormProps {
     clientSecret: string;
+    depositPaid: number;
 }
 
-export default function CheckoutForm({ clientSecret }: CheckoutFormProps) {
+export default function CheckoutForm({ clientSecret, depositPaid }: CheckoutFormProps) {
     const appearance: Appearance = {
         theme: "stripe",
     };

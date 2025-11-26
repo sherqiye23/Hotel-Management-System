@@ -62,7 +62,10 @@ export async function POST(req: NextRequest) {
             }
         }, 15 * 60 * 1000);
 
-        return NextResponse.json({ reservationId: reservation._id });
+        return NextResponse.json({
+            reservationId: reservation._id,
+            depositPaid: reservation.depositPaid
+        });
 
     } catch (error) {
         return handleError(error)

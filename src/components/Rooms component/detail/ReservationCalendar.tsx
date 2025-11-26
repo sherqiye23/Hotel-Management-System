@@ -27,7 +27,7 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     d.setHours(0, 0, 0, 0);
     return d;
   }, []);
-  
+
   const tomorrow = useMemo(() => {
     const d = new Date(today);
     d.setDate(d.getDate() + 1);
@@ -71,7 +71,7 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     const dateString = formatDate(date);
 
     if (bookedDateSet.has(dateString) || date.getTime() < tomorrow.getTime()) {
-      return; 
+      return;
     }
 
     if (!selectedStart || (selectedStart && selectedEnd)) {
@@ -80,15 +80,15 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     } else {
       let start = selectedStart;
       let end = date;
-      
+
       if (start.getTime() > end.getTime()) {
-          [start, end] = [end, start]; 
+        [start, end] = [end, start];
       }
 
       const diffTime = Math.abs(end.getTime() - start.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      if (diffDays < 1) { 
+
+      if (diffDays < 1) {
         setSelectedStart(date);
         setSelectedEnd(null);
         return;
@@ -107,14 +107,14 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
 
       if (hasOverlap) {
         toast.error("Selection failed: Your range includes a day that is already booked. Please select again.");
-        setSelectedStart(date); 
+        setSelectedStart(date);
         setSelectedEnd(null);
       } else {
         if (date.getTime() > selectedStart.getTime()) {
-            setSelectedEnd(date);
+          setSelectedEnd(date);
         } else {
-            setSelectedStart(date);
-            setSelectedEnd(selectedStart);
+          setSelectedStart(date);
+          setSelectedEnd(selectedStart);
         }
       }
     }
@@ -127,12 +127,12 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     if (bookedDateSet.has(dateString)) {
       return ' bg-red-100 text-gray-400 line-through cursor-not-allowed';
     }
-    if (date.getTime() < tomorrow.getTime()) { 
+    if (date.getTime() < tomorrow.getTime()) {
       return ' bg-gray-100 text-gray-300 cursor-not-allowed';
     }
 
-    classes += ' hover:bg-cyan-100 cursor-pointer'; 
-    
+    classes += ' hover:bg-cyan-100 cursor-pointer';
+
     const isStart = selectedStart && dateString === formatDate(selectedStart);
     const isEnd = selectedEnd && dateString === formatDate(selectedEnd);
     const isInRange = selectedStart && selectedEnd && isDateInRange(date, selectedStart, selectedEnd);
@@ -148,7 +148,7 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
     if (isEnd) {
       classes += ' bg-cyan-600 text-white font-semibold rounded-r-lg';
     }
-    
+
     if (isStart && !selectedEnd) {
       classes += ' bg-cyan-600 text-white font-semibold rounded-lg';
     }
@@ -161,7 +161,7 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
       const diffTime = Math.abs(selectedEnd.getTime() - selectedStart.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      if (diffDays >= 1) { 
+      if (diffDays >= 1) {
         onReservationConfirm(selectedStart, selectedEnd);
       } else {
         toast.error("Please select a range of at least two consecutive days (one night).");
@@ -186,21 +186,21 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl">
       <div className="flex justify-between items-center mb-4">
-        <button 
-          onClick={prevMonth} 
+        <button
+          onClick={prevMonth}
           className="p-2 text-gray-600 hover:bg-gray-100 rounded-full cursor-pointer"
         >
           &lt;
         </button>
         <h2 className="text-xl font-semibold text-gray-800">{monthName}</h2>
-        <button 
-          onClick={nextMonth} 
+        <button
+          onClick={nextMonth}
           className="p-2 text-gray-600 hover:bg-gray-100 rounded-full cursor-pointer"
         >
           &gt;
         </button>
       </div>
-      
+
       <div className="grid grid-cols-7 gap-1 text-center text-sm">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
           <div key={day} className="font-bold text-gray-500 py-2">
@@ -235,16 +235,15 @@ export const ReservationCalendar: React.FC<HotelReservationCalendarProps> = ({
         </p>
       </div>
 
-      <button 
-        className={`w-full p-3 mt-4 text-white font-semibold rounded-lg transition-colors cursor-pointer text-sm ${
-          selectedStart && selectedEnd ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
-        }`}
+      <button
+        className={`w-full p-3 mt-4 text-white font-semibold rounded-lg transition-colors cursor-pointer text-sm ${selectedStart && selectedEnd ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
+          }`}
         onClick={handleConfirm}
         disabled={!(selectedStart && selectedEnd)}
       >
         Confirm Reservation (2 Days Minimum)
       </button>
-      
+
       <div className="mt-4 pt-4 border-t border-gray-100 text-xs flex justify-around text-gray-600">
         <span className="flex items-center">
           <span className="w-3 h-3 bg-red-100 rounded-sm mr-1"></span> Booked

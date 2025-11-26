@@ -40,7 +40,7 @@ export interface IRating extends Document {
 }
 
 export interface IReservation extends Document {
-    _id:  mongoose.Types.ObjectId;
+    _id: mongoose.Types.ObjectId;
     roomId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
     startReservedTime: Date;
@@ -53,7 +53,7 @@ export interface IReservation extends Document {
 }
 
 export interface IReservationforMail extends Document {
-    _id:  mongoose.Types.ObjectId;
+    _id: mongoose.Types.ObjectId;
     roomId: IRoom;
     userId: mongoose.Types.ObjectId;
     startReservedTime: Date;

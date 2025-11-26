@@ -1,6 +1,6 @@
 'use client'
 import RoomDetailPageComponent from "@/src/components/Rooms component/detail/RoomDetailPageComponent";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 
 export type ResData = {
   reservationId: string,
@@ -9,11 +9,11 @@ export type ResData = {
 
 export default function RoomDetailPage() {
   const [showPayment, setShowPayment] = useState<boolean>(false)
-  const [reservationData, setReservationData] = useState<ResData | undefined>(undefined)
+  const [reservationData, setReservationData] = useState<ResData>({
+    reservationId: '',
+    depositPaid: 0
+  })
+  console.log(reservationData);
 
-  return <RoomDetailPageComponent showPayment={showPayment} reservationData={reservationData} setReservationData={function (value: SetStateAction<ResData>): void {
-    throw new Error("Function not implemented.");
-  }} setShowPayment={function (value: SetStateAction<boolean>): void {
-    throw new Error("Function not implemented.");
-  }} />
+  return <RoomDetailPageComponent showPayment={showPayment} reservationData={reservationData} setReservationData={setReservationData} setShowPayment={setShowPayment} />
 }

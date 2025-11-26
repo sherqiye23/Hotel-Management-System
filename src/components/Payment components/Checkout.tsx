@@ -13,7 +13,7 @@ import styles from './Checkout.module.css'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-function PaymentForm() {
+function PaymentForm({ depositPaid }: { depositPaid: number }) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -56,7 +56,7 @@ function PaymentForm() {
             <PaymentElement className={styles.paymentElement} options={paymentElementOptions} />
             <button className={styles.button} disabled={isLoading || !stripe || !elements}>
                 <span>
-                    {isLoading ? <div className={styles.spinner}></div> : 'Pay now'}
+                    {isLoading ? <div className={styles.spinner}></div> : `Pay now ${depositPaid}$`}
                 </span>
             </button>
             {message && <div className={styles.paymentMessage}>{message}</div>}
@@ -76,7 +76,7 @@ export default function CheckoutForm({ clientSecret, depositPaid }: CheckoutForm
 
     return (
         <Elements stripe={stripePromise} options={{ appearance, clientSecret }}>
-            <PaymentForm />
+            <PaymentForm depositPaid={depositPaid} />
         </Elements>
     );
 }

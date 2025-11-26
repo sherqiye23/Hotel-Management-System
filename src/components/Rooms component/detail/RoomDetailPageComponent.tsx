@@ -4,7 +4,7 @@ import { ResData } from "@/src/app/(main)/rooms/[roomname]/page";
 
 type RoomDetailTypes = {
     showPayment: boolean,
-    reservationData?: ResData,
+    reservationData: ResData,
     setReservationData: React.Dispatch<React.SetStateAction<ResData>>;
     setShowPayment: React.Dispatch<React.SetStateAction<boolean>>;
 }

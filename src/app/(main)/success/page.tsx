@@ -81,7 +81,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
             <a href={`https://dashboard.stripe.com/payments/${paymentIntentId}`} target="_blank" rel="noopener noreferrer">
                 View details
             </a>
-            <a className={styles.retryButton} href="/">Test another</a>
+            <a className={styles.retryButton} href="/">Back Home</a>
         </div>
     );
 }

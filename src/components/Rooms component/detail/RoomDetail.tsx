@@ -86,16 +86,19 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
     };
     try {
       const response = await postReservation(resData).unwrap();
+      console.log(response);
+
       toast.success(`Success! Booking confirmed from ${checkIn} to ${checkOut}.`);
       setReservationData({
+        depositPaid: response.depositPaid,
         reservationId: response.reservationId,
-        depositPaid: response.deposidPaid
       });
       setShowPayment(true);
     } catch (error: unknown) {
       const err = error as FetchBaseQueryError;
       if ("status" in err && err.status === 401) {
         router.push("/login");
+        console.log(error)
         return;
       }
       handleFormError(error);

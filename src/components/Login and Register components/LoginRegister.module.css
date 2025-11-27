@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap");
 
 .ringContainer * {
   margin: 0;
@@ -12,109 +12,141 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #e6ecff;
+  background: #eef2ff;
   width: 100%;
-  overflow: hidden;
+  padding: 20px;
 }
 
 .ring {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 450px;
+  padding: 40px 25px;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .login {
-  position: absolute;
-  width: 300px;
-  height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
+  text-align: center;
 }
 
 .login h2 {
-  font-size: 2em;
-  color: #000;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1c1c;
+  margin-bottom: 5px;
 }
 
-.login .inputBx {
+.inputBx {
+  width: 100%;
   position: relative;
-  width: 100%;
 }
 
-.login .inputBx input {
-  position: relative;
+.inputBx input {
   width: 100%;
-  padding: 7px 20px;
-  background: transparent;
-  border: 2px solid #000;
-  border-radius: 40px;
-  font-size: 1.1em;
-  color: #000;
-  font-weight: 600;
-  box-shadow: none;
-  outline: none;
-  background-color: #fff;
+  padding: 12px 18px;
+  padding-right: 42px;
+  background: #fff;
+  border: 2px solid #d3d9ff;
+  border-radius: 14px;
+  font-size: 1rem;
+  color: #1c1c1c;
+  font-weight: 500;
+  transition: 0.25s ease;
 }
 
-.login .inputBx input[type="submit"] {
-  width: 100%;
-  background-color: #5D9DE5;
+.inputBx input::placeholder {
+  color: #6b6b6b;
+}
+
+.inputBx input:focus {
+  border-color: #6793ff;
+  box-shadow: 0 0 0 4px rgba(103, 147, 255, 0.2);
+}
+
+.inputBx input[type="submit"] {
+  background: linear-gradient(135deg, #6b8cff, #3d6bff);
   color: #fff;
   border: none;
   cursor: pointer;
+  font-weight: 600;
+  padding: 12px 0;
+  transition: 0.2s ease;
 }
 
-.login .inputBx input::placeholder {
-  color: rgba(89, 89, 89, 0.75);
+.inputBx input[type="submit"]:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
 }
 
-.login .errorMessage {
-  color: rgb(255, 35, 35);
+.errorMessage {
+  width: 100%;
+  text-align: left;
+  font-size: 0.85rem;
+  margin-top: 3px;
+  padding-left: 8px;
+  color: #ff3131;
   font-weight: 600;
 }
 
-.login .checkbox {
-  cursor: pointer;
-  display: flex;
-  width: 100%;
-  padding: 0px 5px;
-  color: #000;
-  gap: 5px;
-}
-
-.login .links {
-  position: relative;
-  width: 100%;
+.checkbox {
   display: flex;
   align-items: center;
+  gap: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.links {
+  display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 5px;
+  margin-top: 5px;
 }
 
-.login .links a {
-  color: #000;
-  text-decoration: none;
+.links a {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #3d6bff;
   font-weight: 600;
-
-  &:hover {
-    color: #5D9DE5;
-  }
+  transition: 0.2s;
 }
 
-@media (max-width: 700px) {
-  .ring i {
-    display: none;
-  }
+.links a:hover {
+  text-decoration: underline;
 }
 
-@media (max-width: 400px) {
-  .login {
-    width: 250px;
+.inputBx .passwordIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6b6b6b;
+  transition: 0.15s;
+}
+
+.inputBx .password-icon:hover {
+  color: #3c3c3c;
+}
+
+@media (max-width: 480px) {
+  .ring {
+    width: 100%;
+    padding: 30px 18px;
+  }
+
+  .login h2 {
+    font-size: 1.7rem;
   }
 }

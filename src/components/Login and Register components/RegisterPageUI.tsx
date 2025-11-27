@@ -61,7 +61,7 @@ const RegisterPageUI: React.FC = () => {
                                         name="password"
                                         placeholder="Password" />
                                     <div
-                                        className="text-base absolute z-10 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                                        className={`${styles.passwordIcon} password-icon`}
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? <LuEye /> : <LuEyeClosed />}

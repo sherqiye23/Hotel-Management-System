@@ -1,6 +1,7 @@
 import { stripe } from '@/src/lib/stripe';
 import { redirect } from 'next/navigation'
 import styles from '../../../components/Payment components/Checkout.module.css'
+import ConfirmReservationClient from '@/src/components/Payment components/ConfirmReservationClient';
 
 const SuccessIcon =
     <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,12 +50,11 @@ interface SuccessPageProps {
 export default async function SuccessPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
     const params = await searchParams;
     const paymentIntentId = params.payment_intent;
-    const redirectStatus = params.redirect_status;
+    const reservationId = params.reservationId;
 
     if (!paymentIntentId) redirect('/');
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-
     const status = paymentIntent.status as keyof typeof STATUS_CONTENT_MAP;
     const statusContent = STATUS_CONTENT_MAP[status] || STATUS_CONTENT_MAP.default;
 
@@ -82,6 +82,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
                 View details
             </a>
             <a className={styles.retryButton} href="/">Back Home</a>
+            {reservationId && <ConfirmReservationClient reservationId={reservationId} />}
         </div>
     );
 }

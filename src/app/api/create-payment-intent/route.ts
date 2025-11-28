@@ -5,10 +5,10 @@ export async function POST(req: Request) {
     const { depositPaid, reservationId } = await req.json();
 
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(depositPaid * 100), 
+        amount: Math.round(depositPaid * 100),
         currency: 'usd',
         automatic_payment_methods: { enabled: true },
-        metadata: { reservationId }, 
+        metadata: { reservationId },
     });
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });

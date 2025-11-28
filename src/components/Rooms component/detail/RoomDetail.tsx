@@ -84,6 +84,7 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
       startReservedTime: checkIn,
       endReservedTime: checkOut,
     };
+    console.log(resData)
     try {
       const response = await postReservation(resData).unwrap();
       console.log(response);

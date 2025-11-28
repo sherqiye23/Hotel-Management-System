@@ -41,7 +41,7 @@ export const reservationApi = createApi({
             query: ({ id, confirmBody }) => ({
                 url: `post/confirm/${id}`,
                 method: 'POST',
-                body: confirmBody,
+                body: { email: confirmBody },
                 headers: { 'Content-Type': 'application/json' }
             }),
         }),

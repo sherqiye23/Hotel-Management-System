@@ -26,7 +26,7 @@ export default function PaymentPage({ reservationData }: PaymentPageProps) {
 
     return (
         <div className={styles.checkout}>
-            <CheckoutForm clientSecret={clientSecret} depositPaid={depositPaid} />
+            <CheckoutForm clientSecret={clientSecret} depositPaid={depositPaid} reservationId={reservationId} />
         </div>
     );
 }

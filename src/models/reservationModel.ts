@@ -21,20 +21,11 @@ const reservationSchema = new mongoose.Schema<IReservation>(
             default: false,
         },
         endingStatusTime: { type: Date },
-        depositPaid: { type: Number, default: 0 },  
+        depositPaid: { type: Number, default: 0 },
         remainingAmount: { type: Number, default: 0 },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
-reservationSchema.pre("save", function (next) {
-    if (this.startReservedTime) {
-        this.startReservedTime.setUTCHours(8, 0, 0, 0);
-    }
-    if (this.endReservedTime) {
-        this.endReservedTime.setUTCHours(8, 0, 0, 0);
-    }
-    next();
-});
 
 reservationSchema.post(
     "findOneAndDelete",

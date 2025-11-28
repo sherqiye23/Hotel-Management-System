@@ -20,8 +20,14 @@ export async function POST(req: NextRequest) {
         const room = await Room.findById(roomId).populate("reservations");
         if (!room) return NextResponse.json({ message: "Room not found" }, { status: 404 });
 
-        const start = new Date(startReservedTime);
-        const end = new Date(endReservedTime);
+        function createUTCDate(dateStr: string) {
+            const [year, month, day] = dateStr.split("-").map(Number);
+            const d = new Date(Date.UTC(year, month - 1, day, 8, 0, 0)); 
+            return d;
+        }
+
+        const start = createUTCDate(startReservedTime);
+        const end = createUTCDate(endReservedTime);
 
         const isOverlap = room.reservations?.some((res: IReservation) => {
             return start < new Date(res.endReservedTime) && end > new Date(res.startReservedTime);

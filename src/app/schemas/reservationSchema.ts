@@ -9,16 +9,12 @@ export const schemaReservationId = Yup.string().required("reservationId is requi
 
 // post
 export const newReservationSchema = Yup.object({
-    startReservedTime: Yup.date()
-        .nullable()
-        .min(new Date(), "Start date cannot be in the past")
+    startReservedTime: Yup.string()
+        .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
         .required("Start date is required"),
-    endReservedTime: Yup.date()
-        .nullable()
-        .min(
-            Yup.ref("startReservedTime"),
-            "End date cannot be before start date"
-        )
+
+    endReservedTime: Yup.string()
+        .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
         .required("End date is required"),
 });
 

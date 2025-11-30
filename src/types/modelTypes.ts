@@ -11,6 +11,17 @@ export interface IUser extends Document {
     refreshToken: string;
 }
 
+export interface IUserProfile {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    isAdmin: boolean;
+    reservedRooms: IReservationProfile[];
+    ratings: IRatingProfile[];
+}
+
 export interface IFeedback extends Document {
     fromMail: string;
     description: string;
@@ -39,6 +50,13 @@ export interface IRating extends Document {
     value: number;
 }
 
+export interface IRatingProfile extends Document {
+    roomId: IRoom;
+    userId: IUser;
+    value: number;
+    createdAt: Date;
+}
+
 export interface IReservation extends Document {
     _id: mongoose.Types.ObjectId;
     roomId: mongoose.Types.ObjectId;
@@ -50,6 +68,20 @@ export interface IReservation extends Document {
     endingStatusTime: Date | null;
     depositPaid: number;
     remainingAmount: number;
+}
+
+export interface IReservationProfile extends Document {
+    _id: mongoose.Types.ObjectId;
+    roomId: IRoom;
+    userId: mongoose.Types.ObjectId;
+    startReservedTime: Date;
+    endReservedTime: Date;
+    status: "pending" | "confirmed" | "cancelled";
+    isSoftDeleted: boolean;
+    endingStatusTime: Date | null;
+    depositPaid: number;
+    remainingAmount: number;
+    createdAt: Date;
 }
 
 export interface IReservationforMail extends Document {

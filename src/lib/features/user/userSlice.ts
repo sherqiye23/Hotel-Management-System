@@ -1,6 +1,7 @@
-import { IUser } from "@/src/types/modelTypes";
+import { IUser, IUserProfile } from "@/src/types/modelTypes";
 import { LoginRequest, LoginResponse, messageResponse, RegisterRequest } from "@/src/types/rtkSlicesTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export const usersApi = createApi({
     reducerPath: "usersApi",
@@ -21,9 +22,8 @@ export const usersApi = createApi({
             query: () => "get/getall",
             providesTags: ['User'],
         }),
-        getByIdUser: builder.query<IUser, void>({
-            query: (id) => `get/getbyid/${id}`,
-            providesTags: ['User'],
+        getByIdUser: builder.query<IUserProfile, string | typeof skipToken>({
+            query: (id) => `/api/user/${String(id)}`,
         }),
         // post requests
         loginUser: builder.mutation<LoginResponse, LoginRequest>({

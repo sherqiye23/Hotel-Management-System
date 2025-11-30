@@ -38,7 +38,7 @@ const UserInfoContext = ({ children }: Props) => {
         };
 
         fetchUser();
-    }, []); 
+    }, []);
 
     return (
         <RegisterContext.Provider value={{ userInfo, setUserInfo, isLoading, setIsLoading }}>

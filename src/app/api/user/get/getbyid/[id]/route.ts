@@ -14,8 +14,20 @@ export async function GET(
         const { id } = validatedData;
 
         const user = await User.findById(id)
-            .populate("reservations")
-            .populate("ratings");
+            .populate({
+                path: "reservedRooms",
+                populate: {
+                    path: "roomId",
+                    model: "Room"
+                }
+            })
+            .populate({
+                path: "ratings",
+                populate: {
+                    path: "roomId",
+                    model: "Room"
+                }
+            });
 
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
@@ -25,7 +37,7 @@ export async function GET(
                 lastname: user.lastname,
                 email: user.email,
                 isAdmin: user.isAdmin,
-                reservedRooms: user.reservations,
+                reservedRooms: user.reservedRooms,
                 ratings: user.ratings,
                 createdAt: user.createdAt
             }

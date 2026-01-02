@@ -23,6 +23,12 @@ const getStatusColor = (status: IReservationProfile['status']): string => {
     }
 };
 
+const getReservationClass = (reservationDate: Date) => {
+    return new Date(reservationDate) < new Date()
+        ? 'bg-gray-50 opacity-60'
+        : 'bg-white';
+}
+
 const UserReservations: React.FC<UserReservationsProps> = ({ reservations }) => {
     const router = useRouter();
 
@@ -37,7 +43,7 @@ const UserReservations: React.FC<UserReservationsProps> = ({ reservations }) => 
                     <div
                         key={String(res._id)}
                         onClick={() => router.push(`/rooms/${res.roomId.slug}`)}
-                        className="cursor-pointer flex flex-col overflow-hidden bg-white border border-gray-200 rounded-xl shadow-md transition duration-300 md:flex-row">
+                        className={`cursor-pointer flex flex-col overflow-hidden rounded-xl shadow-md border-gray-200 transition duration-300 md:flex-row ${getReservationClass(res.endReservedTime)}`}>
                         <div className="flex-1 p-5">
                             <div className='flex flex-col md:flex-row gap-2'>
                                 <h3 className="mb-2 text-xl font-semibold text-gray-900">
@@ -65,7 +71,7 @@ const UserReservations: React.FC<UserReservationsProps> = ({ reservations }) => 
                                 <div className="flex items-center text-gray-700">
                                     <IoIosCloseCircle className="w-4 h-4 mr-2 text-blue-500" />
                                     <strong>Check-out: </strong><span className='ml-1'>{new Date(res.endReservedTime
-                                        
+
                                     ).toLocaleString("az-AZ", { timeZone: "Asia/Baku" })}</span>
                                 </div>
 

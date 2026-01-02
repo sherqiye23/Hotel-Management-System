@@ -22,8 +22,8 @@ export const usersApi = createApi({
             query: () => "get/getall",
             providesTags: ['User'],
         }),
-        getByIdUser: builder.query<IUserProfile, string | typeof skipToken>({
-            query: (id) => `/api/user/${String(id)}`,
+        getByIdUser: builder.query({
+            query: (id) => `get/getbyid/${id}`,
         }),
         // post requests
         loginUser: builder.mutation<LoginResponse, LoginRequest>({

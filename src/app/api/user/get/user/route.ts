@@ -26,13 +26,33 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const user = await User.findById(payload.id).select("-password");
-        if (!user) {
-            return NextResponse.json(
-                { message: "User not found" },
-                { status: 404 },
-            );
-        }
+        const user = await User.findById(payload.id)
+            .select("-password")
+            .select("-refreshToken")
+            .select("-__v")
+            .populate({
+                path: "reservedRooms",
+                populate: {
+                    path: "roomId",
+                    model: "Room"
+                },
+                options: {
+                    sort: { 'createdAt': -1 }
+                }
+            })
+            .populate({
+                path: "ratings",
+                populate: {
+                    path: "roomId",
+                    model: "Room"
+                },
+                options: {
+                    sort: { 'createdAt': -1 }
+                }
+            });
+
+
+        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
         return NextResponse.json(user);
     } catch (error: unknown) {
         return handleError(error);

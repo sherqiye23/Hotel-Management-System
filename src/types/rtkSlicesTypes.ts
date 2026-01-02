@@ -18,9 +18,6 @@ export interface RegisterRequest {
 export interface messageResponse {
     message: string;
 }
-export interface UserInfoContextType extends RegisterRequest {
-    _id: string;
-};
 
 // Feedback
 export interface FeedbackPostResponseType {

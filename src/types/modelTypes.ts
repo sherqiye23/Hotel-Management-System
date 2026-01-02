@@ -68,6 +68,7 @@ export interface IReservation extends Document {
     endingStatusTime: Date | null;
     depositPaid: number;
     remainingAmount: number;
+    createdAt: Date;
 }
 
 export interface IReservationProfile extends Document {

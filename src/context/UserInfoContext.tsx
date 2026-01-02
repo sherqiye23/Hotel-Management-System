@@ -1,7 +1,6 @@
 'use client';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { UserInfoContextType } from '../types/rtkSlicesTypes';
-import { UserInfoContextStatesType } from '../types/contextTypes';
+import { UserInfoContextStatesType, UserInfoContextType } from '../types/contextTypes';
 import axios, { AxiosError } from "axios";
 
 export const RegisterContext = createContext<UserInfoContextStatesType | null>(null)

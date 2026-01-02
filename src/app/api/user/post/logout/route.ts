@@ -39,11 +39,6 @@ export async function POST(request: NextRequest) {
                 { message: "User not found" },
                 { status: 404 },
             );
-        if (!user.refreshToken)
-            return NextResponse.json(
-                { message: "Refresh token not found" },
-                { status: 404 },
-            );
 
         user.refreshToken = null;
         await user.save();

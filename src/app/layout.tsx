@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hotel Management System",
+  title: "East Hotel",
   description: "A hotel management system (HMS) is a comprehensive software platform that automates and streamlines a hotel's daily operations, acting as a central hub for all data and activities. It manages various tasks from both the front and back office, including reservation management, guest check-in.",
 };
 

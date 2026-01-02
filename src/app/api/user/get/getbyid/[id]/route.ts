@@ -19,6 +19,9 @@ export async function GET(
                 populate: {
                     path: "roomId",
                     model: "Room"
+                },
+                options: {
+                    sort: { 'createdAt': -1 }
                 }
             })
             .populate({
@@ -26,6 +29,9 @@ export async function GET(
                 populate: {
                     path: "roomId",
                     model: "Room"
+                },
+                options: {
+                    sort: { 'createdAt': -1 }
                 }
             });
 
@@ -33,6 +39,7 @@ export async function GET(
 
         return NextResponse.json(
             {
+                id: user.id,
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,

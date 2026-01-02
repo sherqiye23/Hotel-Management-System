@@ -7,12 +7,10 @@ import { useMyContext } from "@/src/context/UserInfoContext";
 
 export default function Home() {
   const { userInfo, setUserInfo, isLoading } = useMyContext()
-  console.log(userInfo);
   return (
     isLoading ? <Loader /> : (
       <div className="rounded-4xl">
         <HeroSection />
-        {/* <PaymentElement /> */}
         <AboutSection />
         <FeedbackSection />
       </div>

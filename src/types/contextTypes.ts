@@ -23,9 +23,16 @@ export interface IReservationContextType extends Document {
     createdAt: Date;
 }
 
+export interface IRatingContextType extends Document {
+    roomId: IRoom;
+    userId: mongoose.Types.ObjectId;
+    value: number;
+}
+
 export interface UserInfoContextType extends RegisterRequest {
     _id: string;
-    reservedRooms: IReservationContextType[]
+    reservedRooms: IReservationContextType[],
+    ratings: IRatingContextType[]
 };
 
 export interface Context {

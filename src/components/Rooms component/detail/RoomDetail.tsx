@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Star, Users } from "lucide-react";
-import { useGetBySlugRoomQuery } from "@/src/lib/features/room/roomSlice";
+import { useGetBySlugRoomQuery, useRateRoomMutation } from "@/src/lib/features/room/roomSlice";
 import Loader from "../../Loader";
 import { cloudinaryUrl } from "@/src/lib/urls";
 import { ReservationCalendar } from "./ReservationCalendar";
@@ -14,6 +14,8 @@ import { usePostReservationMutation } from "@/src/lib/features/reservation/reser
 import { handleFormError } from "@/src/utils/handleFormError";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ResData } from "@/src/app/(main)/rooms/[roomname]/page";
+import { useMyContext } from "@/src/context/UserInfoContext";
+import { IRatingContextType } from "@/src/types/contextTypes";
 
 type Props = {
   setReservationData: React.Dispatch<React.SetStateAction<ResData>>;
@@ -29,6 +31,7 @@ const formatDate = (date: Date): string => {
 
 export default function RoomDetail({ setShowPayment, setReservationData }: Props) {
   const [open, setOpen] = useState<boolean>(false);
+  const { userInfo } = useMyContext();
   const { roomname } = useParams();
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -39,7 +42,49 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
   } = useGetBySlugRoomQuery(`${roomname}`);
 
   const [postReservation] = usePostReservationMutation()
+  const [rateRoom] = useRateRoomMutation()
 
+  // rating finded and clicked
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+  const [findedRating, setFindedRating] = useState<IRatingContextType | null>(null);
+
+  useEffect(() => {
+    if (userInfo && room) {
+      const rating = userInfo.ratings?.find(
+        (rating: IRatingContextType) =>
+          rating?.roomId._id &&
+          room?.id &&
+          rating.roomId._id.toString() === room.id.toString()
+      );
+      setFindedRating(rating || null);
+      console.log(rating)
+    }
+  }, [userInfo, room]);
+
+  console.log(userInfo);
+  
+
+  const onClickFunctionRating = async (value: number) => {
+    console.log(value);
+    const resData = {
+      value,
+    };
+    try {
+      if (room?.id) {
+        await rateRoom({ id: room.id, ratingBody: resData }).unwrap();
+
+      }
+    } catch (error: unknown) {
+      const err = error as FetchBaseQueryError;
+      if ("status" in err && err.status === 401 || err.status === 403) {
+        router.push("/login");
+        return;
+      }
+      handleFormError(error);
+    }
+  }
+
+  // error page
   useEffect(() => {
     if (!isLoading && isError) {
       router.push("/404");
@@ -48,14 +93,15 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
 
   if (isLoading || !room) return <Loader />;
 
+  // slider
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev === room.images.length - 1 ? 0 : prev + 1));
   };
-
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? room.images.length - 1 : prev - 1));
   };
 
+  // stars
   const stars = Array.from({ length: 5 }, (_, i) => i + 1);
 
   // reservation
@@ -84,11 +130,8 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
       startReservedTime: checkIn,
       endReservedTime: checkOut,
     };
-    console.log(resData)
     try {
       const response = await postReservation(resData).unwrap();
-      console.log(response);
-
       toast.success(`Success! Booking confirmed from ${checkIn} to ${checkOut}.`);
       setReservationData({
         depositPaid: response.depositPaid,
@@ -99,7 +142,6 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
       const err = error as FetchBaseQueryError;
       if ("status" in err && err.status === 401) {
         router.push("/login");
-        console.log(error)
         return;
       }
       handleFormError(error);
@@ -163,10 +205,15 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
               key={star}
               size={20}
               className={
-                room.averageRating >= star
-                  ? "text-yellow-400 fill-yellow-400"
-                  : "text-gray-300"
+                (hoveredStar !== null
+                  ? star <= hoveredStar
+                  : star <= (findedRating?.value ?? 0))
+                  ? "text-yellow-400 fill-yellow-400 cursor-pointer"
+                  : "text-gray-300 cursor-pointer"
               }
+              onMouseOver={() => setHoveredStar(star)}
+              onMouseLeave={() => setHoveredStar(null)}
+              onClick={() => onClickFunctionRating(star)}
             />
           ))}
           <span className="ml-2 text-gray-600 font-medium flex justify-center items-center gap-2">

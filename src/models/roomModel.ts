@@ -10,7 +10,7 @@ const roomSchema = new mongoose.Schema<IRoom>(
             type: String,
             trim: true,
             required: [true, 'Room name is required'],
-            maxlength: 15,
+            maxlength: 30,
             minlength: 3,
             unique: true
         },

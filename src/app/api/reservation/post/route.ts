@@ -13,8 +13,10 @@ export async function POST(req: NextRequest) {
         if (user instanceof NextResponse) return user;
 
         const reqBody = await req.json();
+
         const roomId = await schemaRoomId.validate(reqBody.roomId, { abortEarly: false });
         const validatedData = await newReservationSchema.validate(reqBody, { abortEarly: false });
+        
         const { startReservedTime, endReservedTime } = validatedData;
 
         const room = await Room.findById(roomId).populate("reservations");

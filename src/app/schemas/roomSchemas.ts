@@ -18,7 +18,7 @@ export const postRoomSchema = Yup.object({
         .trim()
         .required("Room name is required")
         .min(3, "Name must be at least 3 characters")
-        .max(15, "Name must be at most 15 characters"),
+        .max(30, "Name must be at most 30 characters"),
 
     description: Yup.string()
         .trim()
@@ -50,7 +50,7 @@ export const patchRoomSchema = Yup.object({
         .trim()
         .required("Room name is required")
         .min(3, "Name must be at least 3 characters")
-        .max(15, "Name must be at most 15 characters"),
+        .max(30, "Name must be at most 30 characters"),
 
     description: Yup.string()
         .trim()

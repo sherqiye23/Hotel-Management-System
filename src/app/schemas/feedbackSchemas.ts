@@ -11,7 +11,7 @@ export const postFeedbacksDescSchema = Yup.object({
     description: Yup.string()
         .trim()
         .required('Description is required')
-        .max(100, 'Must be 100 characters or less'),
+        .max(200, 'Must be 200 characters or less'),
 });
 export const postFeedbacksMailSchema = Yup.object({
     fromMail: Yup.string()

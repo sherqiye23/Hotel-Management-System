@@ -17,7 +17,7 @@ const feedbackSchema = new mongoose.Schema<IFeedback>(
             type: String,
             trim: true,
             required: [true, 'Feedback description is required'],
-            maxlength: 100,
+            maxlength: 200,
         },
         isRead: {
             type: Boolean,

@@ -13,7 +13,6 @@ export default function RoomDetailPage() {
     reservationId: '',
     depositPaid: 0
   })
-  console.log(reservationData);
 
   return <RoomDetailPageComponent showPayment={showPayment} reservationData={reservationData} setReservationData={setReservationData} setShowPayment={setShowPayment} />
 }

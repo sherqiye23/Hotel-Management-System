@@ -15,7 +15,7 @@ import { handleFormError } from "@/src/utils/handleFormError";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ResData } from "@/src/app/(main)/rooms/[roomname]/page";
 import { useMyContext } from "@/src/context/UserInfoContext";
-import { IRatingContextType } from "@/src/types/contextTypes";
+import { IRatingContextType, UserInfoContextType } from "@/src/types/contextTypes";
 
 type Props = {
   setReservationData: React.Dispatch<React.SetStateAction<ResData>>;
@@ -31,7 +31,7 @@ const formatDate = (date: Date): string => {
 
 export default function RoomDetail({ setShowPayment, setReservationData }: Props) {
   const [open, setOpen] = useState<boolean>(false);
-  const { userInfo } = useMyContext();
+  const { userInfo, setUserInfo } = useMyContext();
   const { roomname } = useParams();
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -46,43 +46,60 @@ export default function RoomDetail({ setShowPayment, setReservationData }: Props
 
   // rating finded and clicked
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
-  const [findedRating, setFindedRating] = useState<IRatingContextType | null>(null);
+  const [findedRating, setFindedRating] = useState<IRatingContextType | { _id: string; userId: string; value: number; roomId: { _id: string } } | null>(null);
 
   useEffect(() => {
     if (userInfo && room) {
       const rating = userInfo.ratings?.find(
-        (rating: IRatingContextType) =>
-          rating?.roomId._id &&
-          room?.id &&
-          rating.roomId._id.toString() === room.id.toString()
-      );
-      setFindedRating(rating || null);
-      console.log(rating)
+        (r) => r.roomId?._id && room?.id && r.roomId._id.toString() === room.id.toString()
+      ) || null;
+      setFindedRating(rating);
+      console.log(rating);
     }
   }, [userInfo, room]);
 
-  console.log(userInfo);
-  
 
   const onClickFunctionRating = async (value: number) => {
-    console.log(value);
-    const resData = {
-      value,
-    };
-    try {
-      if (room?.id) {
-        await rateRoom({ id: room.id, ratingBody: resData }).unwrap();
+    if (!room || !userInfo) return;
 
-      }
+    try {
+      const resData = await rateRoom({ id: room.id, ratingBody: { value } }).unwrap();
+      const updatedRating = resData.message;
+
+      setUserInfo((prev: UserInfoContextType | null) => {
+        if (!prev) return prev;
+
+        const existingIndex = prev.ratings.findIndex(
+          r => r.roomId._id === room.id
+        );
+
+        let newRatings;
+        if (existingIndex >= 0) {
+          newRatings = [...prev.ratings];
+          newRatings[existingIndex] = {
+            ...newRatings[existingIndex],
+            value: updatedRating.value,
+          };
+        } else {
+          newRatings = [...prev.ratings, {
+            _id: updatedRating._id,
+            userId: updatedRating.userId,
+            value: updatedRating.value,
+            roomId: { _id: room.id }
+          }];
+        }
+
+        return { ...prev, ratings: newRatings };
+      });
     } catch (error: unknown) {
       const err = error as FetchBaseQueryError;
-      if ("status" in err && err.status === 401 || err.status === 403) {
+      if ("status" in err && (err.status === 401 || err.status === 403)) {
         router.push("/login");
         return;
       }
       handleFormError(error);
     }
-  }
+  };
 
   // error page
   useEffect(() => {

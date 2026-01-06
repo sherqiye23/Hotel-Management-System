@@ -13,35 +13,46 @@ const ratingSchema = new mongoose.Schema<IRating>(
 )
 
 ratingSchema.post("save", async function (doc) {
-    const ratings = await Rating.find({ roomId: doc.roomId });
-    const total = ratings.reduce((sum, r) => sum + r.value, 0);
-    const room = await Room.findById(doc.roomId);
-    if (room && !room.ratings.includes(doc._id)) {
-        room.ratings.push(doc._id);
-        room.ratingCount = ratings.length;
-        room.averageRating = total / ratings.length;
-        await room.save();
-    }
+    try {
+        const ratings = await Rating.find({ roomId: doc.roomId });
+        const total = ratings.reduce((sum, r) => sum + r.value, 0);
 
-    const user = await User.findById(doc.userId);
-    if (user && !user.ratings.includes(doc._id)) {
-        user.ratings.push(doc._id);
-        await user.save();
-    }
-});
+        const room = await Room.findById(doc.roomId);
+        if (room) {
+            if (!room.ratings.includes(doc._id)) {
+                room.ratings.push(doc._id);
+            }
+            room.ratingCount = ratings.length;
+            room.averageRating = total / ratings.length;
+            await room.save();
+        }
 
-
-ratingSchema.post("findOneAndUpdate", async function (doc) {
-    if (!doc) return;
-    const ratings = await Rating.find({ roomId: doc.roomId });
-    const total = ratings.reduce((sum, r) => sum + r.value, 0);
-    const room = await Room.findById(doc.roomId);
-    if (room) {
-        room.ratingCount = ratings.length;
-        room.averageRating = total / ratings.length;
-        await room.save();
+        const user = await User.findById(doc.userId);
+        if (user && !user.ratings.includes(doc._id)) {
+            user.ratings.push(doc._id);
+            await user.save();
+        }
+    } catch (err) {
+        console.error("Rating error (post save):", err);
     }
 });
+
+
+// ratingSchema.post("findOneAndUpdate", async function (doc) {
+//     try {
+//         if (!doc) return;
+//         const ratings = await Rating.find({ roomId: doc.roomId });
+//         const total = ratings.reduce((sum, r) => sum + r.value, 0);
+//         const room = await Room.findById(doc.roomId);
+//         if (room) {
+//             room.ratingCount = ratings.length;
+//             room.averageRating = total / ratings.length;
+//             await room.save();
+//         }
+//     } catch (err) {
+//         console.error("Rating error (post findOneAndUpdate):", err);
+//     }
+// });
 
 const Rating = mongoose.models.Rating || mongoose.model<IRating>('Rating', ratingSchema);
 export default Rating

@@ -21,7 +21,7 @@ export const feedbacksApi = createApi({
             query: () => "get/getall",
             providesTags: ['Feedback'],
         }),
-        getAllSoftDeletedFeedbacks: builder.query<IFeedback[], void>({
+        getAllSoftDeletedFeedbacks: builder.query<[], void>({
             query: () => "get/getallsoftdeleted",
             providesTags: ['Feedback'],
         }),

@@ -10,7 +10,7 @@ interface Props {
 }
 const UserInfoContext = ({ children }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [userInfo, setUserInfo] = useState<UserInfoContextType | null>();
+    const [userInfo, setUserInfo] = useState<UserInfoContextType | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {

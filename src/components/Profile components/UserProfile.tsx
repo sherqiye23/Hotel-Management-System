@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { FaBookmark, FaStar } from 'react-icons/fa';
+import { IoIosSettings } from "react-icons/io";
 import { TabState } from '@/src/types/stateTypes';
 import { useMyContext } from '@/src/context/UserInfoContext';
 import ProfileTabButton from './ProfileTabButton';
@@ -8,6 +9,7 @@ import Loader from '../Loader';
 import UserReservations from './UserReservations';
 import { useRouter } from 'next/navigation';
 import NotFoundPage from '@/src/app/not-found';
+import { UserSettings } from './UserSettings';
 
 export default function ProfileTabs() {
   const [activeTab, setActiveTab] = useState<TabState>('reservations');
@@ -38,6 +40,13 @@ export default function ProfileTabs() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
+          <ProfileTabButton
+            tab="settings"
+            label="My Settings"
+            icon={<IoIosSettings className="w-4 h-4 text-gray-600" />}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
         </nav>
       </div>
 
@@ -49,6 +58,8 @@ export default function ProfileTabs() {
             <UserReservations reservations={userInfo?.reservedRooms ?? []} />
           ) : activeTab == 'ratings' ? (
             <div>Ratings</div>
+          ) : activeTab == 'settings' ? (
+            <UserSettings />
           ) : <NotFoundPage />
         }
       </div>

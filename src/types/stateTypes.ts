@@ -1,1 +1,1 @@
-export type TabState = 'reservations' | 'ratings';
+export type TabState = 'reservations' | 'ratings' | 'settings';

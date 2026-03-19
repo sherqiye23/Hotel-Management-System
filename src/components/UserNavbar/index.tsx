@@ -64,6 +64,7 @@ const UserNavbar = () => {
                 <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
                     {
                         linkArray.map(link => (
+                            !userInfo?.firstname && link.href === '/profile' ? null :
                             <Link key={link.href} href={link.href}>{link.pathname}</Link>
                         ))
                     }
@@ -109,6 +110,7 @@ const UserNavbar = () => {
                 <div className="absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-md md:hidden flex flex-col items-start p-4 space-y-3 animate-fade-in">
                     {
                         linkArray.map(link => (
+                            !userInfo?.firstname && link.href === '/profile' ? null :
                             <Link
                                 className='w-full text-gray-700 font-medium'
                                 key={link.href}
